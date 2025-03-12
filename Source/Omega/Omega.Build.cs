@@ -25,8 +25,6 @@ public class Omega : ModuleRules
 			"PaperZD",
 			"PaperZDEditor",
 			
-			
-			
 			// GAS
 			"GameplayAbilities",
 			"GameplayTags",
