@@ -14,10 +14,7 @@ public class Omega : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
-			
-			// Input
-			"InputCore", 
-			"EnhancedInput",
+			"InputCore",
 			
 			// 2D
 			"Paper2D",
@@ -36,13 +33,13 @@ public class Omega : ModuleRules
 			"UMG",
 			
 			// AI
-			"AIModule",
+			"AIModule", "EnhancedInput",
 			
 			// VFX
 			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

@@ -1,0 +1,89 @@
+﻿#pragma once
+
+#include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+
+
+/**
+ * OmegaGameplayTags
+ *
+ * Singleton containing native Gameplay Tags
+ */
+
+struct FOmegaGameplayTags
+{
+	
+
+	static const FOmegaGameplayTags& Get() { return GameplayTags; }
+	static void InitializeNativeGameplayTags();
+
+private:
+
+	static FOmegaGameplayTags GameplayTags;
+	
+
+public:
+
+	
+	// -------------------------------------
+	//  PRIMARY ATTRIBUTE
+	// -------------------------------------
+	
+	FGameplayTag Attributes_Primary_Strength;
+	FGameplayTag Attributes_Primary_Intelligence;
+	FGameplayTag Attributes_Primary_Dexterity;
+
+
+	// -------------------------------------
+	//  SECONDARY ATTRIBUTE
+	// -------------------------------------
+	
+	FGameplayTag Attributes_Secondary_MaxHealth;
+	FGameplayTag Attributes_Secondary_MaxMana;
+
+
+	// -------------------------------------
+	//  TERTIARY ATTRIBUTE
+	// -------------------------------------
+
+	FGameplayTag Attributes_Tertiary_Health;
+	FGameplayTag Attributes_Tertiary_Mana;
+
+	
+	// -------------------------------------
+	//  ELEMENTAL
+	// -------------------------------------
+	
+	FGameplayTag Elemental_Fire_OnFire;
+	FGameplayTag Elemental_Fire_Burn;
+
+	FGameplayTag Elemental_Water_InWater;
+	FGameplayTag Elemental_Water_Wet;
+
+	
+	// -------------------------------------
+	//  MESSAGES
+	// -------------------------------------
+	
+	FGameplayTag Message_HealthPotion_Small;
+	FGameplayTag Message_HealthPotion_Mid;
+	
+	FGameplayTag Message_ManaPotion_Small;
+	FGameplayTag Message_ManaPotion_Mid;
+
+	
+	// -------------------------------------
+	//  INPUT
+	// -------------------------------------
+
+	FGameplayTag InputTag_LMB;
+	FGameplayTag InputTag_RMB;
+
+	// -------------------------------------
+	//  META
+	// -------------------------------------
+
+	FGameplayTag Damage;
+	FGameplayTag Effects_HitReact;
+};
+
