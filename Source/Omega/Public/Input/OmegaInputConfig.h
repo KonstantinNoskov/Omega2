@@ -5,6 +5,17 @@
 #include "Engine/DataAsset.h"
 #include "OmegaInputConfig.generated.h"
 
+USTRUCT(BlueprintType)
+struct FOmegaInputAction
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	const UInputAction* InputAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayTag InputTag = FGameplayTag();
+};
 
 UCLASS()
 class OMEGA_API UOmegaInputConfig : public UDataAsset

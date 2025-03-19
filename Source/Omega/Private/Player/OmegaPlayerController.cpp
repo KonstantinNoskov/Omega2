@@ -46,7 +46,10 @@ void AOmegaPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	// EnhancedInputComponent Valid Check
-	UOmegaInputComponent* OmegaInputComponent = CastChecked<UOmegaInputComponent>(InputComponent);
+
+	
+	UOmegaInputComponent* OmegaInputComponent = Cast<UOmegaInputComponent>(InputComponent);
+	if (!OmegaInputComponent) return;
 
 	OmegaInputComponent->BindAction(MoveAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
 	OmegaInputComponent->BindAction(JumpAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);

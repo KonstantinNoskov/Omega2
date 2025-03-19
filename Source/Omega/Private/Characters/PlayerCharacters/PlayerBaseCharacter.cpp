@@ -23,6 +23,13 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// =============================
+	//  CAPSULE
+	// =============================
+
+	GetCapsuleComponent()->SetCapsuleHalfHeight(78.f);
+
+	
 	// -------------------------------------
 	//  CAMERA
 	// -------------------------------------
@@ -39,6 +46,8 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
+	CharacterCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
+	
 
 
 	// -------------------------------------

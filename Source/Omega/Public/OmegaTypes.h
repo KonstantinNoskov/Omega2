@@ -168,16 +168,6 @@ struct FOmegaAttributeInfo
 	float AttributeValue = 0.f;
 };
 
-USTRUCT(BlueprintType)
-struct FOmegaInputAction
-{
-	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
-	const UInputAction* InputAction = nullptr;
-
-	UPROPERTY(EditDefaultsOnly)
-	FGameplayTag InputTag = FGameplayTag();
-};
 
 
