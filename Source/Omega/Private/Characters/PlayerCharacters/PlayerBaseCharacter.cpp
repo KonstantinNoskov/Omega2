@@ -27,7 +27,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	//  CAPSULE
 	// =============================
 
-	GetCapsuleComponent()->SetCapsuleHalfHeight(78.f);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(60.f);
 
 	
 	// -------------------------------------
@@ -37,7 +37,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	CharacterSpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
 	CharacterSpringArm->SetupAttachment(GetRootComponent());
 	CharacterSpringArm->SetWorldRotation(FRotator(0.f,-90.f,0.f));
-	CharacterSpringArm->TargetArmLength = 600.f;
+	CharacterSpringArm->TargetArmLength = 800.f;
 	CharacterSpringArm->bInheritPitch = false;
 	CharacterSpringArm->bInheritYaw = false;
 	CharacterSpringArm->bInheritRoll = false;
@@ -46,7 +46,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
-	//CharacterCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
+	CameraDistanceUpdateSpeed = .1f;
 	
 
 
