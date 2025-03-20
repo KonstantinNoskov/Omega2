@@ -12,9 +12,11 @@ void AOmegaHUD::BeginPlay()
 
 void AOmegaHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
-	checkf(OverlayWidgetClass,				TEXT("[%hs]: HUD OverlayWidgetClass property is null!"), __FUNCTION__)
-	checkf(OverlayWidgetControllerClass,	TEXT("[%hs]: HUD OverlayWidgetControllerClass property is null!"), __FUNCTION__)
+	//checkf(OverlayWidgetClass,				TEXT("[%hs]: HUD OverlayWidgetClass property is null!"), __FUNCTION__)
+	//checkf(OverlayWidgetControllerClass,	TEXT("[%hs]: HUD OverlayWidgetControllerClass property is null!"), __FUNCTION__)
 
+	if (!OverlayWidgetClass || !OverlayWidgetControllerClass) return;
+	
 	// Creating overlay widget
 	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget = Cast<UOmegaUserWidget>(Widget);

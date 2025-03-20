@@ -63,10 +63,10 @@ public:
 
 protected:
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OmegaSpringArm")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CameraZoom")
 	float MaxCameraDistance = 1000.f;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OmegaSpringArm")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CameraZoom")
 	float CameraDistanceUpdateSpeed = 1.f;
 
 #pragma endregion

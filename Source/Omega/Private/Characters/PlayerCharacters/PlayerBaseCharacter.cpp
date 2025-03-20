@@ -46,7 +46,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
-	CharacterCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
+	//CharacterCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
 	
 
 
@@ -106,7 +106,7 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 
 	// Inform Ability system that all essential data is set and it's time to bind callbacks to ability system delegates (OnGameplayEffectApplied, etc.)
 	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(OmegaPlayerState->GetAbilitySystemComponent());
-	if (!OmegaASC)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"),__FUNCTION__)	return;	}
+	if (!OmegaASC)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbilitySystem to UOmegaAbilitySystem is failed!"),__FUNCTION__)	return;	}
 	
 	OmegaASC->OnAbilityActorInfoSet();
 	
