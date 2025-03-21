@@ -52,6 +52,7 @@ private:
 	float InitialWalkDeceleration;
 
 	float BaseWalkSpeed;
+	float BaseGroundFriction;
 	
 public:
 
@@ -116,6 +117,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
 	float DashCooldown = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
+	float AdjustedGroundFriction = 4.f;
 
 
 #pragma endregion

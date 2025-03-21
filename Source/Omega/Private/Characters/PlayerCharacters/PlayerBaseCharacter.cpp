@@ -56,6 +56,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Player);
+	GetCapsuleComponent()->SetCollisionProfileName("Player");
 	
 }
 

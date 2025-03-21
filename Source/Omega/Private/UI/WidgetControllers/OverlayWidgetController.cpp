@@ -11,8 +11,8 @@ void UOverlayWidgetController::BroadcastInitialValues()
 {
 
 	const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet);
-	check(AttributeData);
-
+	if (!AttributeData) return;
+	
 	for (auto& Pair : OmegaAttributeSet->TagsToAttributes)
 	{
 		FOmegaAttributeInfo AttributeInfo = AttributeData->FindAttributeInfoByTag(Pair.Key);

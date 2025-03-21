@@ -46,6 +46,24 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Max amount of mana")
 			);
 
+	// Physical Damage
+	GameplayTags.Attributes_Secondary_PhysicalDamage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.PhysicalDamage"),
+			FString("Physical Damage")
+			);
+
+	// Magic Damage
+	GameplayTags.Attributes_Secondary_MagicDamage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.MagicDamage"),
+			FString("Magic Damage")
+			);
+
+	// Crit Chance
+	GameplayTags.Attributes_Secondary_CritChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.CritChance"),
+			FString("Chance to critical hit")
+			);
+
 
 	// -------------------------------------
 	//  TERTIARY ATTRIBUTES

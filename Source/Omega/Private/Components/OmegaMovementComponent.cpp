@@ -16,6 +16,7 @@ UOmegaMovementComponent::UOmegaMovementComponent()
 	NavAgentProps.bCanCrouch = true;
 
 	BaseWalkSpeed = MaxWalkSpeed;
+	BaseGroundFriction = GroundFriction;
 }
 
 void UOmegaMovementComponent::BeginPlay()
@@ -149,6 +150,7 @@ void UOmegaMovementComponent::PerformDash()
 	
 	OmegaCustomMovementMode = EOmegaCustomMovementMode::Dash;
 	BrakingDecelerationWalking = 1000.f;
+	GroundFriction = AdjustedGroundFriction;
 	
 	DashStarTime = GetWorld()->GetTimeSeconds();
 	
@@ -170,7 +172,7 @@ void UOmegaMovementComponent::OnDashFinished()
 	
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
 	BrakingDecelerationWalking = InitialWalkDeceleration;
-	
+	GroundFriction = BaseGroundFriction;
 }
 
 

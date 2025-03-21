@@ -40,6 +40,9 @@ public:
 	
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
+	FGameplayTag Attributes_Secondary_PhysicalDamage;
+	FGameplayTag Attributes_Secondary_MagicDamage;
+	FGameplayTag Attributes_Secondary_CritChance;
 
 
 	// -------------------------------------
