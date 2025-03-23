@@ -32,14 +32,6 @@ enum class EEffectRemovalPolicy : uint8
 	DoNotRemove
 };
 
-UENUM(BlueprintType)
-enum class EOmegaCustomMovementMode : uint8
-{
-	None,
-	Dash,
-	Mantle
-};
-
 /*
  * Stores essentials params to setup widget controllers
  */

@@ -33,11 +33,30 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	
+	virtual void PossessedBy(AController* NewController) override;
 
 	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override		{ return AbilitySystemComponent; }
-	FORCEINLINE UAttributeSet* GetAttributeSet() const
-	{ return AttributeSet; }
+	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	
+	// -------------------------------------
+	//  MOVEMENT
+	// -------------------------------------
+	
+public:
+	
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
+
+protected:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
+	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
+
+public:
+
+	UFUNCTION(BlueprintPure, Category = "Omega|Movement")
+	UOmegaMovementComponent* GetOmegaMovementComponent();	
 
 protected:
 	
@@ -60,6 +79,7 @@ protected:
 public:
 	
 	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
+
 	
 	// -------------------------------------
 	//  ATTRIBUTES
@@ -83,25 +103,6 @@ protected:
 
 	
 	// -------------------------------------
-	//  MOVEMENT
-	// -------------------------------------
-	
-public:
-	
-	virtual void PossessedBy(AController* NewController) override;
-
-protected:
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
-	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
-
-public:
-
-	UFUNCTION(BlueprintPure, Category = "Omega|Movement")
-	UOmegaMovementComponent* GetOmegaMovementComponent();	
-
-	
-	// -------------------------------------
 	//  ABILITIES
 	// -------------------------------------
 
@@ -111,7 +112,9 @@ protected:
 
 public:
 	
+	
 	virtual FVector GetProjectileSpawnLocation() override;
+	
 
 protected:
 	
