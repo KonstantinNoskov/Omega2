@@ -78,7 +78,6 @@ void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 	}
 }
-
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_LMB))
@@ -127,6 +126,8 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
+		bool bMoveable = GetOmegaMovementComponent()->GetOmegaCustomMovementMode() == EOmegaCustomMovementMode::None;
+		
 		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::None) return;
 		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));

@@ -15,8 +15,8 @@ UOmegaMovementComponent::UOmegaMovementComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	NavAgentProps.bCanCrouch = true;
 
-	BaseWalkSpeed = MaxWalkSpeed;
-	BaseGroundFriction = GroundFriction;
+	InitialWalkSpeed = MaxWalkSpeed;
+	InitialGroundFriction = GroundFriction;
 }
 
 void UOmegaMovementComponent::BeginPlay()
@@ -24,7 +24,6 @@ void UOmegaMovementComponent::BeginPlay()
 	Super::BeginPlay();
 	InitialWalkDeceleration = BrakingDecelerationWalking;
 }
-
 void UOmegaMovementComponent::BindDependencies(AController* OwningController)
 {
 	OmegaOwner = Cast<AOmegaCharacter>(GetOwner());
@@ -37,14 +36,12 @@ void UOmegaMovementComponent::BindDependencies(AController* OwningController)
 	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaOwner is null!"),__FUNCTION__);	}
 	
 }
-
 void UOmegaMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	UpdateCapsulePosition(DeltaTime);
 }
-
 void UOmegaMovementComponent::UpdateCapsulePosition(float DeltaTime) const
 {
 	if (OmegaCustomMovementMode == EOmegaCustomMovementMode::Mantle)
@@ -53,7 +50,9 @@ void UOmegaMovementComponent::UpdateCapsulePosition(float DeltaTime) const
 	}
 }
 
-#pragma region JUMP
+// =============================
+//  JUMP
+// =============================
 
 void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionValue) const
 {
@@ -67,7 +66,6 @@ void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionVa
 		}
 	}
 }
-
 bool UOmegaMovementComponent::IsValidJump() const 
 {
 	const bool bNotValid = !OmegaOwner || IsCrouching();
@@ -98,30 +96,40 @@ bool UOmegaMovementComponent::IsValidJump() const
 	return bJumpValid;
 }
 
-#pragma endregion
 
-#pragma region CROUCH
+// =============================
+//  CROUCH
+// =============================
 
+void UOmegaMovementComponent::HandleCrouch(const FInputActionValue& InputActionValue)
+{
+	if (!IsCrouchValid(InputActionValue)) return;
+
+	PerformCrouch(InputActionValue);
+	
+	
+}
+bool UOmegaMovementComponent::IsCrouchValid(const FInputActionValue& InputActionValue) const
+{	
+	bool bValidCrouch =
+		InputActionValue.Get<bool>() &&
+		OmegaOwner &&
+		//!IsFalling() &&
+		//OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash &&
+			GetLastUpdateVelocity().Length() <= 0.f;
+
+	return bValidCrouch;
+}
 void UOmegaMovementComponent::PerformCrouch(const FInputActionValue& InputActionValue)
 {
-	const bool InputBool = InputActionValue.Get<bool>();
+	bWantsToCrouch = IsCrouchValid(InputActionValue) ? true : false;
 	
-	if (OmegaOwner)
-	{
-		if (InputBool && !IsFalling() && OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash)
-		{	
-			OmegaOwner->Crouch();
-		}
-		else
-		{
-			OmegaOwner->UnCrouch();
-		}
-	}
 }
 
-#pragma endregion
 
-#pragma region DASH
+// =============================
+//  DASH
+// =============================
 
 void UOmegaMovementComponent::HandleDash(const FInputActionValue& InputActionValue)
 {
@@ -130,7 +138,6 @@ void UOmegaMovementComponent::HandleDash(const FInputActionValue& InputActionVal
 		PerformDash();
 	}
 }
-
 bool UOmegaMovementComponent::IsValidDash()
 {
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
@@ -172,14 +179,13 @@ void UOmegaMovementComponent::OnDashFinished()
 	
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
 	BrakingDecelerationWalking = InitialWalkDeceleration;
-	GroundFriction = BaseGroundFriction;
+	GroundFriction = InitialGroundFriction;
 }
 
 
-
-#pragma endregion
-
-#pragma region MANTLE
+// =============================
+//  MANTLE
+// =============================
 
 void UOmegaMovementComponent::HandleMantle(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -189,7 +195,6 @@ void UOmegaMovementComponent::HandleMantle(UPrimitiveComponent* HitComponent, AA
 		PerformMantle(MantleTargetPoint);
 	}
 }
-
 bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVector& OutMantleTargetPoint)
 {
 	
@@ -244,7 +249,10 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 			TArray<AActor*>(),
 			bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None,
 			HitResult,
-			true
+			true,
+			FColor::Red,
+			FColor::Green,
+			2.f
 			);
 
 		if (HitResult.bBlockingHit) return false;
@@ -255,7 +263,6 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 	}
 	return false;
 }
-
 void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 {
 	OmegaCustomMovementMode = EOmegaCustomMovementMode::Mantle;
@@ -264,20 +271,23 @@ void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 	SetMovementMode(MOVE_Flying);
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
 
-	OmegaOwner->SetActorLocation(MantleTargetPoint - FVector(OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius() * OmegaOwner->GetActorForwardVector().X,0.f,OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+	
+	// Move Climb start location to be sure that animation is smooth
+	FVector AdjustedLocation = FVector(
+		OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius() * OmegaOwner->GetActorForwardVector().X * 1.5f, 
+		0.f,
+		OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+	
+	OmegaOwner->SetActorLocation(MantleTargetPoint - AdjustedLocation);
 }
-
 void UOmegaMovementComponent::OnMantleFinished()
 {
 	OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
 	SetMovementMode(MOVE_Walking);
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	OmegaController->EnableInput(OmegaController);
+	//OmegaController->EnableInput(OmegaController);
 }
 
-
-
-#pragma endregion
 
 
 

@@ -44,23 +44,28 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	EOmegaCustomMovementMode OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
 
+protected:
+
+	UFUNCTION(BlueprintCallable)
+	void SetOmegaCustomMovementMode(EOmegaCustomMovementMode NewCustomMode)  { OmegaCustomMovementMode = NewCustomMode; }
+
+public:
+
+	FORCEINLINE float GetBaseWalkSpeed() const { return InitialWalkSpeed; }
+
 	
 	// -------------------------------------
-	//  COMMON
+	//  STORES INITIAL VALUES
 	// -------------------------------------
 	
 	float InitialWalkDeceleration;
-
-	float BaseWalkSpeed;
-	float BaseGroundFriction;
+	float InitialWalkSpeed;
+	float InitialGroundFriction;
 	
-public:
-
-	FORCEINLINE float GetBaseWalkSpeed() const { return BaseWalkSpeed; } 
-
+	// =============================
+	//  JUMP
+	// =============================
 	
-#pragma region JUMP
-
 public:
 	
 	UFUNCTION()
@@ -75,22 +80,26 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Omega Movement|Jump", DisplayName = "Debug")
 	bool bJumpDebug = false;
 
-#pragma endregion
-
-#pragma region CROUCH
+	
+	// =============================
+	//  CROUCH
+	// =============================
 
 public:
+
+	UFUNCTION(BlueprintCallable)
+	void HandleCrouch(const FInputActionValue& InputActionValue);
+
+	UFUNCTION(BlueprintCallable)
+	bool IsCrouchValid(const FInputActionValue& InputActionValue) const;
 	
 	UFUNCTION()
 	void PerformCrouch(const FInputActionValue& InputActionValue);
 
-	
 
-	
-#pragma endregion
-
-#pragma region DASH
-
+	// =============================
+	//  DASH
+	// =============================
 
 public:
 	
@@ -122,9 +131,9 @@ protected:
 	float AdjustedGroundFriction = 4.f;
 
 
-#pragma endregion
-
-#pragma region MANTLE
+	// =============================
+	//  CLIMB
+	// =============================
 
 public:
 
@@ -159,7 +168,4 @@ public:
 	bool bMantleDebug = false;
 	
 	bool bValidateMantle = false;
-
-#pragma endregion
-	
 };

@@ -16,17 +16,23 @@ public:
 
 	UOmegaAbilitySystemComponent();
 
+
+	// ====================================
+	//  Movement Component Association
+	// ====================================
+	
 private:
 	
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 
 protected:
-
-	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
-
+	
 	UFUNCTION(BlueprintPure)
 	UOmegaMovementComponent* GetOmegaMovementComponent();
 
+	
+	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+	
 public:
 	
 	void OnAbilityActorInfoSet();
