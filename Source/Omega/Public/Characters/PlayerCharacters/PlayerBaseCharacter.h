@@ -24,18 +24,13 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	virtual void BindDependencies(AController* NewController);
+
+	UFUNCTION()
+	void OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 #pragma region CAMERA
 	
-protected:
-
-	/**
-	 *	Handles player camera behavior during gameplay
-	 * 
-	 *	@param DeltaTime - Delta time
-	 */
-	void HandleCameraBehavior(const float DeltaTime) const;
-	
-
 public:
 
 	FORCEINLINE USpringArmComponent* GetSpringArm() const { return CharacterSpringArm; }
@@ -72,4 +67,5 @@ protected:
 #pragma endregion
 
 	virtual void InitAbilityActorInfo() override;
+	
 };

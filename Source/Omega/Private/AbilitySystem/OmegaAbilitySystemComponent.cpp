@@ -23,7 +23,7 @@ void UOmegaAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& In
 
 	if (!InputTag.IsValid()) return;
 
-	if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::None) return;
+	if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::NONE) return;
 	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{

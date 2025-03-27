@@ -10,35 +10,6 @@ class UOmegaUserWidget;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
-/*
- * Used to handle gameplay effect apply conditions
- */
-UENUM(BlueprintType)
-enum class EEffectApplicationPolicy : uint8
-{
-	ApplyOnOverlap,
-	ApplyOnEndOverlap,
-	DoNotApply
-};
-
-/*
- * Used to handle gameplay effect removal conditions
- */
-UENUM(BlueprintType)
-enum class EEffectRemovalPolicy : uint8
-{
-	RemoveOnOverlap,
-	RemoveOnEndOverlap,
-	DoNotRemove
-};
-
-UENUM(BlueprintType)
-enum class EOmegaCustomMovementMode : uint8
-{
-	None,
-	Dash,
-	Mantle
-};
 
 /*
  * Stores essentials params to setup widget controllers

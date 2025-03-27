@@ -5,8 +5,27 @@
 #include "GameFramework/Actor.h"
 #include "OmegaEffectActor.generated.h"
 
-enum class EEffectRemovalPolicy : uint8;
-enum class EEffectApplicationPolicy : uint8;
+/*
+ * Used to handle gameplay effect apply conditions
+ */
+UENUM(BlueprintType)
+enum class EEffectApplicationPolicy : uint8
+{
+	ApplyOnOverlap,
+	ApplyOnEndOverlap,
+	DoNotApply
+};
+
+/*
+ * Used to handle gameplay effect removal conditions
+ */
+UENUM(BlueprintType)
+enum class EEffectRemovalPolicy : uint8
+{
+	RemoveOnOverlap,
+	RemoveOnEndOverlap,
+	DoNotRemove
+};
 
 struct FActiveGameplayEffectHandle;
 

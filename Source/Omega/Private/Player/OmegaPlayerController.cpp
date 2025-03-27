@@ -24,7 +24,6 @@ void AOmegaPlayerController::BeginPlay()
 }
 
 
-// -------------------------------------
 //  SETUP
 // -------------------------------------
 
@@ -62,7 +61,6 @@ void AOmegaPlayerController::SetupInputComponent()
 }
 
 
-// -------------------------------------
 //  INPUT
 // -------------------------------------
 
@@ -98,7 +96,6 @@ void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 }
 
 
-// -------------------------------------
 //  COMMON FUNCTIONS
 // -------------------------------------
 
@@ -126,9 +123,9 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		bool bMoveable = GetOmegaMovementComponent()->GetOmegaCustomMovementMode() == EOmegaCustomMovementMode::None;
+		bool bMoveable = GetOmegaMovementComponent()->GetOmegaCustomMovementMode() == EOmegaCustomMovementMode::NONE;
 		
-		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::None) return;
+		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::NONE) return;
 		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
 		
@@ -136,6 +133,7 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 		
 		// Rotate character sprite mesh towards to it's direction
 		RotateController();
+		
 	}
 }
 void AOmegaPlayerController::RotateController()
@@ -151,10 +149,10 @@ void AOmegaPlayerController::RotateController()
 }
 
 
-// -------------------------------------
 //  CUSTOM MOVEMENT
 // -------------------------------------
 
+// Jump
 void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 {
 	if (GetOmegaMovementComponent())
@@ -162,13 +160,17 @@ void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 		GetOmegaMovementComponent()->PerformJump(InputActionValue);
 	}
 }
+
+// Crouch
 void AOmegaPlayerController::Crouch(const FInputActionValue& InputActionValue)
 {
 	if (GetOmegaMovementComponent())
 	{
-		OmegaMovementComponent->PerformCrouch(InputActionValue);
+		OmegaMovementComponent->HandleCrouch(InputActionValue);
 	}
 }
+
+// Dash
 void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 {
 	if (GetOmegaMovementComponent())
@@ -176,7 +178,6 @@ void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 		GetOmegaMovementComponent()->HandleDash(InputActionValue);
 	}
 }
-
 void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter)
 {
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)

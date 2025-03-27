@@ -26,12 +26,12 @@ void UOmegaMovementComponent::BeginPlay()
 }
 void UOmegaMovementComponent::BindDependencies(AController* OwningController)
 {
-	OmegaOwner = Cast<AOmegaCharacter>(GetOwner());
+	OmegaCharacterOwner = Cast<AOmegaCharacter>(GetOwner());
 	OmegaController = Cast<AOmegaPlayerController>(OwningController);
 	
-	if (OmegaOwner)
+	if (OmegaCharacterOwner)
 	{
-		OmegaOwner->GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &UOmegaMovementComponent::HandleMantle);
+		OmegaCharacterOwner->GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &UOmegaMovementComponent::HandleMantle);
 	}
 	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaOwner is null!"),__FUNCTION__);	}
 	
@@ -42,42 +42,52 @@ void UOmegaMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 	UpdateCapsulePosition(DeltaTime);
 }
-void UOmegaMovementComponent::UpdateCapsulePosition(float DeltaTime) const
+
+
+//  COMMON FUNCTIONS
+// =============================
+
+void UOmegaMovementComponent::HandleHit()
 {
-	if (OmegaCustomMovementMode == EOmegaCustomMovementMode::Mantle)
+	// Dash behavior on Capsule Hit
+	if (Velocity.Length() > 0 && OmegaCustomMovementMode == EOmegaCustomMovementMode::Dash)
 	{
-		OmegaOwner->GetCapsuleComponent()->SetWorldLocation(FMath::VInterpTo(OmegaOwner->GetCapsuleComponent()->GetComponentLocation(), MantleTargetLocation, DeltaTime, MantleAnimationSpeed));
+		ExitDash();	
 	}
 }
 
-// =============================
-//  JUMP
+
+// JUMP
 // =============================
 
+void UOmegaMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
+{
+	Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
+}
 void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionValue) const
 {
 	const float InputBool = InputActionValue.Get<bool>();
 	
-	if (OmegaOwner)
+	if (OmegaCharacterOwner)
 	{	
 		if (InputBool && IsValidJump())
 		{
-			OmegaOwner->Jump();
+			OmegaCharacterOwner->Jump();
 		}
 	}
 }
 bool UOmegaMovementComponent::IsValidJump() const 
 {
-	const bool bNotValid = !OmegaOwner || IsCrouching();
+	const bool bNotValid = !OmegaCharacterOwner || IsCrouching();
 
 	if(bNotValid) return false;
 	
 	FHitResult HitResult;
 	const UWorld* World = GetWorld();
-	const float CapsuleHalfHeight = OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * .5f;
-	const FVector TraceStart = OmegaOwner->GetCapsuleComponent()->GetComponentLocation() + FVector(0.f,0.,CapsuleHalfHeight) * 2;
+	const float CapsuleHalfHeight = OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * .5f;
+	const FVector TraceStart = OmegaCharacterOwner->GetCapsuleComponent()->GetComponentLocation() + FVector(0.f,0.,CapsuleHalfHeight) * 2;
 	const FVector TraceEnd = TraceStart + FVector(0.f,0.f, 10.f);
-	const float CapsuleRadius = OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const float CapsuleRadius = OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
 	
 	UKismetSystemLibrary::CapsuleTraceSingle(
 		World,
@@ -97,23 +107,24 @@ bool UOmegaMovementComponent::IsValidJump() const
 }
 
 
-// =============================
 //  CROUCH
 // =============================
 
 void UOmegaMovementComponent::HandleCrouch(const FInputActionValue& InputActionValue)
 {
-	if (!IsCrouchValid(InputActionValue)) return;
-
+	if (!IsCrouchValid(InputActionValue))
+	{
+		bWantsToCrouch = false;
+		return;
+	}
+	
 	PerformCrouch(InputActionValue);
-	
-	
 }
 bool UOmegaMovementComponent::IsCrouchValid(const FInputActionValue& InputActionValue) const
 {	
 	bool bValidCrouch =
 		InputActionValue.Get<bool>() &&
-		OmegaOwner &&
+		OmegaCharacterOwner &&
 		//!IsFalling() &&
 		//OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash &&
 			GetLastUpdateVelocity().Length() <= 0.f;
@@ -127,13 +138,12 @@ void UOmegaMovementComponent::PerformCrouch(const FInputActionValue& InputAction
 }
 
 
-// =============================
 //  DASH
 // =============================
 
 void UOmegaMovementComponent::HandleDash(const FInputActionValue& InputActionValue)
 {
-	if (IsValidDash() && OmegaOwner)
+	if (IsValidDash() && OmegaCharacterOwner)
 	{
 		PerformDash();
 	}
@@ -141,8 +151,22 @@ void UOmegaMovementComponent::HandleDash(const FInputActionValue& InputActionVal
 bool UOmegaMovementComponent::IsValidDash()
 {
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
+
+	FHitResult HitResult;
+	GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		OmegaCharacterOwner->GetActorLocation(),
+		OmegaCharacterOwner->GetActorLocation() + OmegaCharacterOwner->GetActorForwardVector() * 100.f,
+		ECC_Visibility,
+		FCollisionQueryParams()
+		);
 	
-	bDashValid = CurrentTime - DashStarTime >= DashCooldown || bFirstDash; 
+	bDashValid =
+		!HitResult.bBlockingHit &&
+		CurrentTime - DashStarTime >= DashCooldown ||
+		bFirstDash;
+		
+	
 	if (bDashValid)
 	{	
 		return IsWalking();
@@ -161,7 +185,7 @@ void UOmegaMovementComponent::PerformDash()
 	
 	DashStarTime = GetWorld()->GetTimeSeconds();
 	
-	const FVector DashDirection = (Acceleration.IsNearlyZero() ? OmegaOwner->GetActorForwardVector() : Acceleration).GetSafeNormal2D();
+	const FVector DashDirection = (Acceleration.IsNearlyZero() ? OmegaCharacterOwner->GetActorForwardVector() : Acceleration).GetSafeNormal2D();
 	
 	Velocity = DashImpulse * DashDirection;
 	
@@ -170,20 +194,19 @@ void UOmegaMovementComponent::PerformDash()
 	FHitResult HitResult;
 	SafeMoveUpdatedComponent(FVector::ZeroVector, NewRotation, false, HitResult);
 
-	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
+	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
 	
 }
-void UOmegaMovementComponent::OnDashFinished()
+void UOmegaMovementComponent::ExitDash()
 {
-	OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::NONE;
 	
-	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
+	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
 	BrakingDecelerationWalking = InitialWalkDeceleration;
 	GroundFriction = InitialGroundFriction;
 }
 
 
-// =============================
 //  MANTLE
 // =============================
 
@@ -197,7 +220,14 @@ void UOmegaMovementComponent::HandleMantle(UPrimitiveComponent* HitComponent, AA
 }
 bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVector& OutMantleTargetPoint)
 {
-	
+	/*
+	 * CHECK №1: FLOOR/CEILING CHECK
+	 *	HandleMantle function is called when Character Capsule OnHit event is triggered.
+	 *	We should distinguish either we hit a floor/ceiling in which case stop function immediately or we hit a vertical wall and continue.
+	 */
+
+
+	// CHECK №1
 	const bool bHorizontalHit = FVector::DotProduct(InHitResult.ImpactNormal, FVector::UpVector) == FMath::Abs(0.f) ? true : false;
 	
 	if (/*IsFalling() && */ bHorizontalHit && !bValidateMantle && OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash)
@@ -210,25 +240,24 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 		GetWorld()->GetTimerManager().SetTimer(MantleCheckResetTimer, OnMantleResetDelegate, MantleCheckInterval,false);
 		
 		bValidateMantle = true;
-		
+
+		// Local variables needed for calculation
 		FHitResult HitResult = InHitResult; 
-		const FVector ForwardVector = OmegaOwner->GetActorForwardVector();
-		const float OwnerCapsuleHeight = OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
-		const float OwnerCapsuleRadius = OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
+		const FVector ForwardVector = OmegaCharacterOwner->GetActorForwardVector();
+		const float OwnerCapsuleHeight = OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * 2.f;
+		const float OwnerCapsuleRadius = OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
 		const FVector HitPoint = HitResult.ImpactPoint;
 		const FVector MantleHeightDistance = HitPoint + FVector(0.f,0.f,GrabHeight);
 		const FVector Adjust_X = MantleHeightDistance + ForwardVector * FVector(OwnerCapsuleRadius, 0.f,0.f);
 		const FVector ClimbTargetPoint = Adjust_X + FVector(0.f,0.f,-OwnerCapsuleHeight - 1.f) ;
 		
-		// HitPoint --> Up 
+		// Trace from HitPoint to Up-direction as far as GrabHeight property allows.
 		UKismetSystemLibrary::LineTraceSingle(GetWorld(), HitPoint, MantleHeightDistance, TraceTypeQuery1, false, TArray<AActor*>(), bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, HitResult, true);
 
-		// Up --> Just a bit towards to actor direction
+		// Move forward just a little bit towards actor direction to be sure that next "Down-Trace" can hit the surface.
+		// If on this stage the trace hits something it means there is solid wall in front of the character.
 		UKismetSystemLibrary::LineTraceSingle(GetWorld(), MantleHeightDistance, Adjust_X, TraceTypeQuery1, false, TArray<AActor*>(), bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, HitResult, true);
-		if (HitResult.bBlockingHit)
-		{
-			return false;	
-		} 
+		if (HitResult.bBlockingHit) return false;	
 		
 		//  All the way down to check if there's a ground to mantle to
 		UKismetSystemLibrary::LineTraceSingle(GetWorld(), Adjust_X, ClimbTargetPoint, TraceTypeQuery1, false, TArray<AActor*>(), bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, HitResult, true);
@@ -236,14 +265,16 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 
 		const float ObstacleHeight = (HitPoint - HitResult.ImpactPoint).Z;
 		if (ObstacleHeight > GrabHeight) return false;
+
+
 		
-		MantleTargetLocation = HitResult.ImpactPoint + FVector(0.f,0.f, OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+		MantleTargetLocation = HitResult.ImpactPoint + FVector(0.f,0.f, OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 		UKismetSystemLibrary::CapsuleTraceSingle(
 			GetWorld(),
 			MantleTargetLocation,
 			MantleTargetLocation,
-			OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius(),
-			OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 1.f,
+			OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius(),
+			OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 1.f,
 			TraceTypeQuery1,
 			false,
 			TArray<AActor*>(),
@@ -269,25 +300,31 @@ void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 	Velocity = FVector::ZeroVector;
 	
 	SetMovementMode(MOVE_Flying);
-	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
+	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
 
 	
 	// Move Climb start location to be sure that animation is smooth
 	FVector AdjustedLocation = FVector(
-		OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleRadius() * OmegaOwner->GetActorForwardVector().X * 1.5f, 
+		OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius() * OmegaCharacterOwner->GetActorForwardVector().X * 1.5f, 
 		0.f,
-		OmegaOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+		OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 	
-	OmegaOwner->SetActorLocation(MantleTargetPoint - AdjustedLocation);
+	OmegaCharacterOwner->SetActorLocation(MantleTargetPoint - AdjustedLocation);
 }
 void UOmegaMovementComponent::OnMantleFinished()
 {
-	OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::NONE;
 	SetMovementMode(MOVE_Walking);
-	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	//OmegaController->EnableInput(OmegaController);
 }
-
+void UOmegaMovementComponent::UpdateCapsulePosition(float DeltaTime) const
+{
+	if (OmegaCustomMovementMode == EOmegaCustomMovementMode::Mantle)
+	{
+		OmegaCharacterOwner->GetCapsuleComponent()->SetWorldLocation(FMath::VInterpTo(OmegaCharacterOwner->GetCapsuleComponent()->GetComponentLocation(), MantleTargetLocation, DeltaTime, MantleAnimationSpeed));
+	}
+}
 
 
 
