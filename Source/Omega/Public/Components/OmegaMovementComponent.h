@@ -7,8 +7,19 @@
 
 class AOmegaPlayerController;
 class AOmegaCharacter;
-enum class EOmegaCustomMovementMode : uint8;
 struct FInputActionValue;
+
+
+UENUM(BlueprintType)
+enum class EOmegaCustomMovementMode : uint8
+{
+	NONE	UMETA(Hidden),
+	Dash	UMETA(DisplayName = "Dash"),
+	Mantle	UMETA(DisplayName = "Mantle"),
+	Slide	UMETA(DisplayName = "Slide"),
+	MAX		UMETA(Hidden)
+};
+
 
 DECLARE_MULTICAST_DELEGATE(FOnMovementEventSignature);
 
@@ -22,7 +33,6 @@ public:
 	UOmegaMovementComponent();
 	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
 
 protected:
 
@@ -38,29 +48,50 @@ public:
 
 private:
 
-	TObjectPtr<AOmegaCharacter> OmegaOwner;
+	TObjectPtr<AOmegaCharacter> OmegaCharacterOwner;
 	TObjectPtr<AOmegaPlayerController> OmegaController;
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	EOmegaCustomMovementMode OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
+	EOmegaCustomMovementMode OmegaCustomMovementMode = EOmegaCustomMovementMode::NONE;
 
 protected:
 
-	UFUNCTION(BlueprintCallable)
-	void SetOmegaCustomMovementMode(EOmegaCustomMovementMode NewCustomMode)  { OmegaCustomMovementMode = NewCustomMode; }
+	
+	//  STORE INITIAL VALUES
+	// =============================
 
 public:
-
-	FORCEINLINE float GetBaseWalkSpeed() const { return InitialWalkSpeed; }
-
-	
-	// -------------------------------------
-	//  STORES INITIAL VALUES
-	// -------------------------------------
 	
 	float InitialWalkDeceleration;
 	float InitialWalkSpeed;
 	float InitialGroundFriction;
+
+
+	//  COMMON FUNCTIONS
+	// =============================
+
+	void HandleHit();
+	
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetOmegaCustomMovementMode(EOmegaCustomMovementMode NewCustomMode)					{ OmegaCustomMovementMode = NewCustomMode; }
+	FORCEINLINE float GetBaseWalkSpeed() const															{ return InitialWalkSpeed; }
+	FORCEINLINE bool IsCustomMovementMode(EOmegaCustomMovementMode InOmegaCustomMovementMode) const		{ return MovementMode == MOVE_Custom && OmegaCustomMovementMode == InOmegaCustomMovementMode; }
+	
+	// =============================
+	//  UPDATE MOVEMENT
+	// =============================
+
+protected:
+	
+	/**
+	 *	Automatically called at the end of every perform move.
+	 * 
+	 * @param DeltaSeconds 
+	 * @param OldLocation 
+	 * @param OldVelocity 
+	 */
+	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
+
 	
 	// =============================
 	//  JUMP
@@ -119,7 +150,7 @@ private:
 protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Omega Movement|Dash" )
-	void OnDashFinished();
+	void ExitDash();
 	
 	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
 	float DashImpulse = 1000.f;
@@ -130,12 +161,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
 	float AdjustedGroundFriction = 4.f;
 
-
-	// =============================
+	
 	//  CLIMB
 	// =============================
-
-public:
 
 	UFUNCTION()
 	void HandleMantle(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

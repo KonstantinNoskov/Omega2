@@ -48,8 +48,7 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
 	CameraDistanceUpdateSpeed = .1f;
 	
-
-
+	
 	// -------------------------------------
 	//  COLLISION CHANNELS
 	// -------------------------------------
@@ -70,21 +69,36 @@ void APlayerBaseCharacter::BeginPlay()
 void APlayerBaseCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	HandleCameraBehavior(DeltaSeconds);
 }
 
 void APlayerBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	
-	InitAbilityActorInfo();
 
+	// GAS
+	InitAbilityActorInfo();
 	AddCharacterAbilities();
 	
+	BindDependencies(NewController);
+}
+
+void APlayerBaseCharacter::BindDependencies(AController* NewController)
+{
+
+	// Bind new controller to a movement component
 	if (OmegaMovementComponent)
 	{
 		OmegaMovementComponent->BindDependencies(NewController);
+	}
+
+	// On Capsule Hit
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerBaseCharacter::OnCapsuleHit);
+}
+void APlayerBaseCharacter::OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OmegaMovementComponent)
+	{
+		OmegaMovementComponent->HandleHit();
 	}
 }
 
@@ -96,7 +110,6 @@ int32 APlayerBaseCharacter::GetPlayerLevel() const
 
 	return OmegaPlayerState->GetPlayerLevel();
 }
-
 void APlayerBaseCharacter::InitAbilityActorInfo()
 {
 	// Init ability actor info with player state valid check
@@ -128,18 +141,3 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 		}
 	}
 }
-
-void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const
-{
-	const float CurrentCameraDistance = CharacterSpringArm->TargetArmLength;
-	const float CurrentVelocity = GetCharacterMovement()->GetLastUpdateVelocity().Length();
-	const float TargetCameraDistance = CurrentCameraDistance * (CurrentVelocity / 100);
-
-	const float InterpCameraDistance = FMath::FInterpTo(CurrentCameraDistance, TargetCameraDistance, DeltaTime, CameraDistanceUpdateSpeed);
-	const float ClampCameraDistance = FMath::Clamp(InterpCameraDistance, InitialCameraDistance, MaxCameraDistance);
-	
-	CharacterSpringArm->TargetArmLength = ClampCameraDistance;
-}
-
-
-
