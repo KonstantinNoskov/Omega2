@@ -66,8 +66,6 @@ void APlayerBaseCharacter::BeginPlay()
 	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
 }
 
-
-
 void APlayerBaseCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -99,7 +97,7 @@ void APlayerBaseCharacter::BindDependencies(AController* NewController)
 void APlayerBaseCharacter::OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OmegaMovementComponent)
-		{
+	{
 		OmegaMovementComponent->HandleHit();
 	}
 }

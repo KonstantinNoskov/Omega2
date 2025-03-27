@@ -54,7 +54,6 @@ void UOmegaMovementComponent::HandleHit()
 	{
 		ExitDash();	
 	}
-	
 }
 
 
@@ -258,10 +257,7 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 		// Move forward just a little bit towards actor direction to be sure that next "Down-Trace" can hit the surface.
 		// If on this stage the trace hits something it means there is solid wall in front of the character.
 		UKismetSystemLibrary::LineTraceSingle(GetWorld(), MantleHeightDistance, Adjust_X, TraceTypeQuery1, false, TArray<AActor*>(), bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, HitResult, true);
-		if (HitResult.bBlockingHit)
-		{
-			return false;	
-		} 
+		if (HitResult.bBlockingHit) return false;	
 		
 		//  All the way down to check if there's a ground to mantle to
 		UKismetSystemLibrary::LineTraceSingle(GetWorld(), Adjust_X, ClimbTargetPoint, TraceTypeQuery1, false, TArray<AActor*>(), bMantleDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, HitResult, true);
