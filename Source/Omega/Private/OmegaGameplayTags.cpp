@@ -87,7 +87,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	// -------------------------------------
 
 	
-	// On Fire
+	// OnFire
 	GameplayTags.Elemental_Fire_OnFire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Elemental.Fire.OnFire"),
 			FString("Actor stays on fire")
@@ -97,6 +97,18 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Elemental_Fire_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Elemental.Fire.Burn"),
 			FString("Actor bruns after he came out of fire")
+			);
+
+	// InWater
+	GameplayTags.Elemental_Water_InWater = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Elemental.Water.InWater"),
+			FString("Actor stays in water")
+			);
+
+	// Wet
+	GameplayTags.Elemental_Water_Wet = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Elemental.Water.Wet"),
+			FString("Wet")
 			);
 
 	// -------------------------------------
