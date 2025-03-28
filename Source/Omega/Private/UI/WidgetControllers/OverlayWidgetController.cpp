@@ -42,13 +42,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 	
 	// Display effect messages on a viewport
-	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags)
+	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags, const FGameplayEffectSpec& AppliedEffectSpec)
 	{
 		for (const FGameplayTag& Tag : InAssetTags)
 		{
 			if (!Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message")))) continue;
+
+			// Message Data
+			FUIWidgetRow* Row = UOmegaFunctionLibrary::GetDataTableRowByTag<FUIWidgetRow>(WidgetMessageDataTable, Tag);
+			Row->EffectMagnitude = AppliedEffectSpec.GetModifierMagnitude(0.f, false);
 			
-			const FUIWidgetRow* Row = UOmegaFunctionLibrary::GetDataTableRowByTag<FUIWidgetRow>(WidgetMessageDataTable, Tag);
 			if (Row) { MessageWidgetRowDelegate.Broadcast(*Row);	}
 			else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Message widget row in %s doesn't exist!"), __FUNCTION__, *WidgetMessageDataTable->GetName()) } 
 		}

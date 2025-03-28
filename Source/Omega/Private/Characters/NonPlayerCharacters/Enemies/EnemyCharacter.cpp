@@ -28,7 +28,8 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
 	AttributeSet = CreateDefaultSubobject<UOmegaAttributeSet>("Omega Attribute Set");
 	
-	// COLLISION CHANNELS
+	// CAPSULE
+	GetCapsuleComponent()->SetCapsuleHalfHeight(80.f);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Enemy);
 

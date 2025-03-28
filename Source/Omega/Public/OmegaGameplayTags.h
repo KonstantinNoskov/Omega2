@@ -74,6 +74,8 @@ public:
 	FGameplayTag Message_ManaPotion_Small;
 	FGameplayTag Message_ManaPotion_Mid;
 
+	FGameplayTag Message_Potion_Intelligence;
+
 	
 	// -------------------------------------
 	//  INPUT

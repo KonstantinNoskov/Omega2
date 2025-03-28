@@ -80,43 +80,9 @@ struct FEffectProperties
 	
 };
 
-/*
- * Stores icon info for gameplay effect message widget
- */
-USTRUCT(BlueprintType)
-struct FMessageIconData
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UPaperSprite* Sprite = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector2D Size = FVector2D(0.f,0.f);
-};
 
 
-/*
- *	Data to display on overlay widget on gameplay tag update 
- */
-USTRUCT()
-struct FUIWidgetRow : public FTableRowBase
-{
-	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FGameplayTag MessageTag = FGameplayTag();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText Message = FText();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UOmegaUserWidget> MessageWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FMessageIconData MessageIconData;
-	
-};
 
 /**
  * Attribute data broadcasted to the widgets

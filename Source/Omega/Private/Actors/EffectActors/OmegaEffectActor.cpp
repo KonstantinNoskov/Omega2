@@ -16,6 +16,7 @@ void AOmegaEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
 }
 
 void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass)

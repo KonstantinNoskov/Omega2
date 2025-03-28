@@ -17,6 +17,13 @@ UOmegaMovementComponent::UOmegaMovementComponent()
 
 	InitialWalkSpeed = MaxWalkSpeed;
 	InitialGroundFriction = GroundFriction;
+
+	SetWalkableFloorAngle(50.f);
+
+	// Constrain to Plane
+	bConstrainToPlane = true;
+	SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
+	
 }
 
 void UOmegaMovementComponent::BeginPlay()

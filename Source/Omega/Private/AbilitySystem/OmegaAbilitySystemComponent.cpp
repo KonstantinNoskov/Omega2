@@ -9,8 +9,6 @@
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-	
 }
 
 void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
@@ -82,7 +80,7 @@ void UOmegaAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* Abil
 	FGameplayTagContainer TagContainer;
 	AppliedEffectSpec.GetAllAssetTags(TagContainer);
 	
-	OnEffectAssetTagsUpdatedDelegate.Broadcast(TagContainer);
+	OnEffectAssetTagsUpdatedDelegate.Broadcast(TagContainer, AppliedEffectSpec);
 }
 
 UOmegaMovementComponent* UOmegaAbilitySystemComponent::GetOmegaMovementComponent()

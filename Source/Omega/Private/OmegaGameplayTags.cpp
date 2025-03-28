@@ -138,6 +138,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Mid Mana potion taken")
 			);
 
+	// Intelligence Potion
+	GameplayTags.Message_Potion_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Message.Potion.Intelligence"),
+			FString("Permanently add intelligence")
+			);
+
+
 
 	// -------------------------------------
 	//  INPUT

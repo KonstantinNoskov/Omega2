@@ -5,7 +5,7 @@
 #include "OmegaAbilitySystemComponent.generated.h"
 
 class UOmegaMovementComponent;
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/, const FGameplayEffectSpec& /*AppliedEffectSpec*/)
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class OMEGA_API UOmegaAbilitySystemComponent : public UAbilitySystemComponent
@@ -16,11 +16,11 @@ public:
 
 	UOmegaAbilitySystemComponent();
 
-
-	// ====================================
-	//  Movement Component Association
-	// ====================================
 	
+	//  Movement Component Association
+	// ===============================================================================================================
+
+
 private:
 	
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
