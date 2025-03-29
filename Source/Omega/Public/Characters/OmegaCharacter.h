@@ -71,6 +71,9 @@ private:
 	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
 
 
+	//  ABILITY SYSTEM
+	// ===============================================================================================================
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -80,10 +83,9 @@ public:
 	
 	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
 
-	
-	// -------------------------------------
-	//  ATTRIBUTES
-	// -------------------------------------
+
+	//  ATTRIBUTE SET
+	// ===============================================================================================================
 
 protected:
 	

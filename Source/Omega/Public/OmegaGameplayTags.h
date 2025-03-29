@@ -75,6 +75,8 @@ public:
 	FGameplayTag Message_ManaPotion_Mid;
 
 	FGameplayTag Message_Potion_Intelligence;
+	FGameplayTag Message_Potion_Strength;
+	FGameplayTag Message_Potion_Dexterity;
 
 	
 	// -------------------------------------

@@ -82,7 +82,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			);
 
 
-	// -------------------------------------
+	
 	//  ELEMENTAL
 	// -------------------------------------
 
@@ -111,7 +111,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Wet")
 			);
 
-	// -------------------------------------
+	
 	//  MESSAGES
 	// -------------------------------------
 	
@@ -143,6 +143,19 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Message.Potion.Intelligence"),
 			FString("Permanently add intelligence")
 			);
+
+	// Strength Potion
+	GameplayTags.Message_Potion_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Message.Potion.Strength"),
+			FString("Permanently add Strength")
+			);
+
+	// Dexterity Potion
+	GameplayTags.Message_Potion_Dexterity = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Message.Potion.Dexterity"),
+			FString("Permanently add Dexterity")
+			);
+
 
 
 
