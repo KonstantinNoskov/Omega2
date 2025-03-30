@@ -20,6 +20,9 @@ class OMEGA_API ICombatInterface
 
 public:
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void Attack() const;
+	
 	virtual int32 GetPlayerLevel() const;
 	
 	virtual FVector GetProjectileSpawnLocation();

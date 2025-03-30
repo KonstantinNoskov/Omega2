@@ -84,26 +84,6 @@ struct FEffectProperties
 
 
 
-/**
- * Attribute data broadcasted to the widgets
- */
-USTRUCT(BlueprintType)
-struct FOmegaAttributeInfo
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag AttributeTag = FGameplayTag();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FText AttributeName = FText();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FText AttributeDescription = FText();
-
-	UPROPERTY(BlueprintReadOnly)
-	float AttributeValue = 0.f;
-};
 
 
 

@@ -22,7 +22,7 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	
-	PrimaryActorTick.bCanEverTick = false;
+	//PrimaryActorTick.bCanEverTick = true;
 
 	// GAS
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
