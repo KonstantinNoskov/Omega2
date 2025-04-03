@@ -5,6 +5,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "OmegaCollisionChannels.h"
 #include "PaperFlipbookComponent.h"
+#include "Actors/PaperEffectActor.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -45,8 +46,10 @@ void AOmegaProjectile::BeginPlay()
 	UGameplayStatics::PlaySoundAtLocation(this, SpawnSound, GetActorLocation(), FRotator::ZeroRotator);
 }
 
+
+
 void AOmegaProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	const FHitResult& SweepResult)
+                                       const FHitResult& SweepResult)
 {
 	// Check for instigator. Projectile SHOULD NOT collide with it's instigator 
 	if (OtherActor == GetInstigator()) return;
@@ -54,26 +57,51 @@ void AOmegaProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 	// Play impact sound
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 
-	// Display impact effect
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-
+	// Spawn paper impact effect
+	SpawnImpactEffect();
+	
 	// Apply damage 
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
 		if (DamageEffectSpecHandle.IsValid())
 		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);	
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("[%hs] Projectile doesn't have a damage effect. Check for Omega Projectile Ability properties. "), __FUNCTION__);
+			UE_LOG(LogTemp, Error, TEXT("[%hs] Projectile ability doesn't have a damage effect. Check for omega projectile ability damage effect class. "), __FUNCTION__);
 			
 		}
-		
 	}
 	
 	Destroy();
 }
 
+void AOmegaProjectile::SpawnImpactEffect()
+{
+	FTransform SpawnTransform;
+	SpawnTransform.SetLocation(GetActorLocation());
+	SpawnTransform.SetRotation(GetActorRotation().Quaternion());
+	
+	// Effect class Valid check
+	if (!ImpactEffectClass) return;
+
+	// Create and define Impact Effect
+	APaperEffectActor* ImpactEffect = GetWorld()->SpawnActorDeferred<APaperEffectActor>(
+		ImpactEffectClass,
+		SpawnTransform,
+		this,
+		nullptr,
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+	);
+
+	if (ImpactEffect)
+	{
+		ImpactEffect->GetRenderComponent()->SetFlipbook(ImpactSpriteEffect);
+
+		// Finish spawning
+		ImpactEffect->FinishSpawning(SpawnTransform);
+	}
+}
 
 

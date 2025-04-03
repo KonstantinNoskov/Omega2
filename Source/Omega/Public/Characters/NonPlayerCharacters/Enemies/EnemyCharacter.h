@@ -94,5 +94,10 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting = false;
+
+	void DeathTagChanged(const FGameplayTag CallbackTag, int32 NewTagCount);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bDead = false;
 	
 };

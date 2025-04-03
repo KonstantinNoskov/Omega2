@@ -64,12 +64,13 @@ protected:
 	 * Assign owner & avatar actor to Ability system 
 	 */
 	virtual void InitAbilityActorInfo();
-
-private:
+	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
+	float PostDeathLifeSpan = 5.f;
 
 	//  ABILITY SYSTEM
 	// ===============================================================================================================
@@ -115,7 +116,7 @@ protected:
 public:
 	
 	
-	virtual FVector GetProjectileSpawnLocation() override;
+	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist) override;
 	
 
 protected:
@@ -129,7 +130,6 @@ private:
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 	
-	// -------------------------------------
 	//  COMBAT 
 	// -------------------------------------
 
@@ -137,6 +137,7 @@ public:
 	
 	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override		{ return PaperAnimation->GetAnimInstance(); }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override	{ return HitReactAnimation; }
+	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override			{ return DeathAnimation; }
 
 	virtual void Die_Implementation() override;
 
@@ -147,8 +148,5 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	TObjectPtr<UPaperZDAnimSequence> DeathAnimation;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
-	float PostDeathLifeSpan = 5.f;
 	
 };

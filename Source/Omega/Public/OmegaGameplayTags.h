@@ -79,18 +79,19 @@ public:
 	FGameplayTag Message_Potion_Dexterity;
 
 	
-	// -------------------------------------
 	//  INPUT
 	// -------------------------------------
 
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 
-	// -------------------------------------
+
 	//  META
 	// -------------------------------------
 
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
+	FGameplayTag Effects_Death;
+	
 };
 

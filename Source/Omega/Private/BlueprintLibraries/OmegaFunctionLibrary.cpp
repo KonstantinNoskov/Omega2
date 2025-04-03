@@ -27,7 +27,6 @@ void UOmegaFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObje
 		UE_LOG(LogTemp, Error, TEXT("[%hs] Character Class Info is null. Check for game mode defaults."), __FUNCTION__);
 		return;
 	}
-
 	
 	UCharacterClassInfo* CharacterClassInfo = OmegaGameMode->CharacterClassInfo;
 	
