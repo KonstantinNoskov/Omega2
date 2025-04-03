@@ -6,6 +6,9 @@
 #include "OmegaProjectile.generated.h"
 
 
+class APaperEffectActor;
+class APaperFlipbookActor;
+class UPaperFlipbook;
 class UNiagaraSystem;
 class UPaperFlipbookComponent;
 class UProjectileMovementComponent;
@@ -22,6 +25,7 @@ public:
 protected:
 	
 	virtual void BeginPlay() override;
+	void SpawnImpactEffect();
 
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -35,7 +39,10 @@ private:
 	TObjectPtr<UPaperFlipbookComponent> Sprite;
 
 	UPROPERTY(Category = "Omega Projectile", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UNiagaraSystem> ImpactEffect;
+	TObjectPtr<UPaperFlipbook> ImpactSpriteEffect;
+	
+	UPROPERTY(Category = "Omega Projectile", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<APaperEffectActor> ImpactEffectClass;
 
 	UPROPERTY(Category = "Omega Projectile", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USoundBase> SpawnSound;

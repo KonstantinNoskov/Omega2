@@ -120,6 +120,8 @@ public:
 	// -------------------------------------
 
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
-	FGameplayAttributeData Damage;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Damage);
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, IncomingDamage);
+
+	float HealthScale = 1.f;
 };

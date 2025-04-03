@@ -25,13 +25,16 @@ public:
 	
 	virtual int32 GetPlayerLevel() const;
 	
-	virtual FVector GetProjectileSpawnLocation();
+	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UPaperZDAnimInstance* GetAnimationInstance() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UPaperZDAnimSequence* GetHitReactionAnimation() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UPaperZDAnimSequence* GetDeathAnimation() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Die();

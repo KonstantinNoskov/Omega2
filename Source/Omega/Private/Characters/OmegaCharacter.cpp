@@ -85,15 +85,20 @@ void AOmegaCharacter::AddCharacterAbilities()
 }
 
 
-// -------------------------------------
+
 //  COMBAT
 // -------------------------------------
 
 
-FVector AOmegaCharacter::GetProjectileSpawnLocation()
+FVector AOmegaCharacter::GetProjectileSpawnSocket(bool& bSocketExist)
 {
-	if (!GetSprite()->DoesSocketExist(ProjectileSpawnSocket)) return FVector();
-	
+	if (!GetSprite()->DoesSocketExist(ProjectileSpawnSocket))
+	{
+		bSocketExist = false;
+		return FVector();
+	}
+		
+	bSocketExist = true;
 	return GetSprite()->GetSocketTransform(ProjectileSpawnSocket).GetLocation();	
 }
 

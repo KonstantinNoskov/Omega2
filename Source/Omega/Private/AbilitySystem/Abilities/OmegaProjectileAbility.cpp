@@ -7,18 +7,20 @@
 #include "Interfaces/CombatInterface.h"
 
 
-void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-                                              const FGameplayEventData* TriggerEventData)
+void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
 	FVector ProjectileSocketLocation;
+	bool bSpawnSocketExist = false;
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()) )
 	{
-		 ProjectileSocketLocation = CombatInterface->GetProjectileSpawnLocation();
+		ProjectileSocketLocation = CombatInterface->GetProjectileSpawnSocket(bSpawnSocketExist);
 	}
 
+	if (!bSpawnSocketExist) return;
+	
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(ProjectileSocketLocation);
 	SpawnTransform.SetRotation(FRotator(0.f,GetAvatarActorFromActorInfo()->GetActorRotation().Yaw, 0.f).Quaternion());
@@ -46,10 +48,10 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	EffectContextHandle.SetAbility(this);
 	EffectContextHandle.AddSourceObject(Projectile);
 
-	//Set Projectile Effect spec 
+	// Set Projectile Effect spec 
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 	
-	// Assign Caller Magnitude
+	// Get GameplayTags
 	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 
 	// Damage depends on ability level 

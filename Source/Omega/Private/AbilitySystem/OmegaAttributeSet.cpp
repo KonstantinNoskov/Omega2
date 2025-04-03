@@ -34,6 +34,11 @@ void UOmegaAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute,
 	
 	if (Attribute == GetHealthAttribute()) NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	if (Attribute == GetManaAttribute()) NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
+	if (Attribute == GetMaxHealthAttribute())
+	{
+		// When MaxHealth changed we want to change current health accordingly it's new MaxHealth
+		HealthScale = GetHealth() / GetMaxHealth();
+	}
 }
 
 void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -51,6 +56,14 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
 	}
 
+	// Change Health depending on the percentage of MaxHealth 
+	if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(FMath::CeilToFloat(GetMaxHealth() * HealthScale), 0.f, GetMaxHealth()));
+
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
+	}
+
 	// Clamping Mana
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
@@ -60,10 +73,10 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	}
 
 	// Handle Incoming Damage
-	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
-		const float LocalIncomingDamage = GetDamage();
-		SetDamage(0.f);
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
 		
 		if (LocalIncomingDamage > 0.f)
 		{
@@ -71,6 +84,8 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
+			UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("%f"),GetHealth())); 
+			
 			// Check for fatal damage
 			const bool bFatal = NewHealth <= 0.f;
 
@@ -80,6 +95,10 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 				if (EffectProperties.TargetAvatarActor->Implements<UCombatInterface>())
 				{
 					ICombatInterface::Execute_Die(EffectProperties.TargetAvatarActor);
+
+					FGameplayTagContainer TagContainer;
+					TagContainer.AddTag(FOmegaGameplayTags::Get().Effects_Death);
+					EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 				}
 			}
 			else
@@ -90,7 +109,6 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			}
 
 			// Show Damage Widget
-
 			if (EffectProperties.SourceCharacter != EffectProperties.TargetCharacter)
 			{
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
@@ -107,7 +125,6 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 {
 
 	// Source == Causer of the effect, Target == target of the effect (owner of this AS)
-	
 	OutEffectProperties.EffectContextHandle = Data.EffectSpec.GetContext();
 
 	// Get Source Data

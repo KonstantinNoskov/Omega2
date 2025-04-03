@@ -156,9 +156,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Permanently add Dexterity")
 			);
 
-
-
-
+	
 	// -------------------------------------
 	//  INPUT
 	// -------------------------------------
@@ -189,6 +187,12 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	// Hit React
 	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Effects.HitReact"),
-			FString("Tag granted when hit reacting")
+			FString("Tag granted when owner get a hit")
+			);
+
+	// Death
+	GameplayTags.Effects_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Effects.Death"),
+			FString("Tag granted when owner dies")
 			);
 }

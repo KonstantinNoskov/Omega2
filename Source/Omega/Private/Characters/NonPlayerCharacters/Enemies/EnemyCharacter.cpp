@@ -7,6 +7,7 @@
 #include "AI/OmegaAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
 #include "Components/WidgetComponent.h"
@@ -60,7 +61,8 @@ void AEnemyCharacter::BeginPlay()
 	{
 		OmegaUserWidget->SetWidgetController(this);
 	}
-	
+
+	UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 	
 	BindCallbacks();
 }
@@ -83,10 +85,14 @@ void AEnemyCharacter::BindCallbacks()
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		});
 
-
+		// Register if HitReact tag applied
 		const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 		FOnGameplayEffectTagCountChanged TagCountChangedDelegate = AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Effects_HitReact, EGameplayTagEventType::NewOrRemoved); 
 		TagCountChangedDelegate.AddUObject(this, &AEnemyCharacter::HitReactTagChanged);
+
+		// Register if Death tag applied
+		TagCountChangedDelegate = AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Effects_Death, EGameplayTagEventType::NewOrRemoved); 
+		TagCountChangedDelegate.AddUObject(this, &AEnemyCharacter::DeathTagChanged);
 
 		// Broadcast initial attribute values
 		OnHealthChanged.Broadcast(OmegaAS->GetHealth());
@@ -130,6 +136,18 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 {
 	bHitReacting = NewTagCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetOmegaMovementComponent()->GetBaseWalkSpeed();
+}
+
+void AEnemyCharacter::DeathTagChanged(const FGameplayTag CallbackTag, int32 NewTagCount)
+{
+	bDead = NewTagCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetOmegaMovementComponent()->GetBaseWalkSpeed();
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+	/*PaperAnimation->GetAnimInstance()->JumpToNode("Death");
+	SetLifeSpan(PostDeathLifeSpan);
+	CombatTargetName = "";*/
 }
 
 
