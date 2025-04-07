@@ -89,7 +89,6 @@ void AOmegaCharacter::AddCharacterAbilities()
 //  COMBAT
 // -------------------------------------
 
-
 FVector AOmegaCharacter::GetProjectileSpawnSocket(bool& bSocketExist)
 {
 	if (!GetSprite()->DoesSocketExist(ProjectileSpawnSocket))

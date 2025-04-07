@@ -127,12 +127,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Mid health potion taken")
 			);
 
-	// Mana Potions
+	// Mana Potion - Small
 	GameplayTags.Message_ManaPotion_Small = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.ManaPotion.Small"),
 			FString("Small Mana potion taken")
 			);
-	
+
+	// Mana Potion - Mid
 	GameplayTags.Message_ManaPotion_Mid = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.ManaPotion.Mid"),
 			FString("Mid Mana potion taken")
@@ -195,4 +196,40 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Effects.Death"),
 			FString("Tag granted when owner dies")
 			);
+
+
+	//  ANIMATIONS
+	// ===============================================================================================================
+	
+	
+	
+	// Death 
+	GameplayTags.Animation_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Animation.Death"),
+			FString("Должен быть добавлен в AnimationTags класса UGGE2D_AnimInstance, чтобы воспроизвести анимацию смерти.")
+			);
+
+	// Idle 
+	GameplayTags.Animation_Idle = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Animation.Idle"),
+			FString("Должен быть добавлен в AnimationTags класса UGGE2D_AnimInstance, чтобы воспроизвести анимацию ожидания.")
+			);
+
+	// Dash 
+	GameplayTags.Animation_Dash = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Animation.Dash"),
+			FString("Должен быть добавлен в AnimationTags класса UGGE2D_AnimInstance, чтобы воспроизвести анимацию рывка.")
+			);
+
+	// Attack 
+	GameplayTags.Animation_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Animation.Attack"),
+			FString("Должен быть добавлен в AnimationTags класса UGGE2D_AnimInstance, чтобы воспроизвести анимацию атаки.")
+			);
+}
+
+
+void FOmegaGameplayTags::StoreAnimationTags()
+{
+	
 }

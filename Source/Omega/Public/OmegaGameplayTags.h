@@ -16,14 +16,18 @@ struct FOmegaGameplayTags
 
 	static const FOmegaGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeGameplayTags();
+	static void StoreAnimationTags();
+	FORCEINLINE static const FGameplayTagContainer& GetAnimationTags() { return AnimationTags; }
+	
 
 private:
 
 	static FOmegaGameplayTags GameplayTags;
+	static FGameplayTagContainer AnimationTags;
 	
-
+	
+	
 public:
-
 	
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTE
@@ -92,6 +96,16 @@ public:
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
 	FGameplayTag Effects_Death;
+
+
+	//  ANIMATION 
+	// ===============================================================================================================
+	
+	FGameplayTag Animation_Death;
+	FGameplayTag Animation_Idle;
+	FGameplayTag Animation_Dash;
+	FGameplayTag Animation_Attack;
+
 	
 };
 

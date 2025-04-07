@@ -40,6 +40,8 @@ public:
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	
+	
+	
 	// -------------------------------------
 	//  MOVEMENT
 	// -------------------------------------

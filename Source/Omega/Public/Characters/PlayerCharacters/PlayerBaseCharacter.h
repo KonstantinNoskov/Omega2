@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
+#include "GameplayTagContainer.h"
 #include "Characters/OmegaCharacter.h"
 #include "Interfaces/PlayerInterface.h"
 #include "PlayerBaseCharacter.generated.h"
@@ -25,6 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void BindDependencies(AController* NewController);
+	
 
 	UFUNCTION()
 	void OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -67,5 +70,4 @@ protected:
 #pragma endregion
 
 	virtual void InitAbilityActorInfo() override;
-	
 };

@@ -6,7 +6,6 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/OmegaPlayerController.h"
 #include "Player/OmegaPlayerState.h"
@@ -94,6 +93,7 @@ void APlayerBaseCharacter::BindDependencies(AController* NewController)
 	// On Capsule Hit
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerBaseCharacter::OnCapsuleHit);
 }
+
 void APlayerBaseCharacter::OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OmegaMovementComponent)
@@ -141,3 +141,4 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 		}
 	}
 }
+

@@ -15,4 +15,5 @@ void UOmegaAssetManager::StartInitialLoading()
 	Super::StartInitialLoading();
 
 	FOmegaGameplayTags::InitializeNativeGameplayTags();
+	FOmegaGameplayTags::StoreAnimationTags();
 }
