@@ -83,8 +83,6 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			// Clamp Updated Health
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-
-			UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("%f"),GetHealth())); 
 			
 			// Check for fatal damage
 			const bool bFatal = NewHealth <= 0.f;

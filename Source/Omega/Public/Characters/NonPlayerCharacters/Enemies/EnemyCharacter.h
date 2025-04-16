@@ -34,8 +34,8 @@ protected:
 public:
 	
 	FORCEINLINE virtual int32 GetPlayerLevel() const override { return Level; }
+	virtual void Die_Implementation() override;
 
-	
 	// -------------------------------------
 	//  ENEMY INTERFACE
 	// -------------------------------------
@@ -82,7 +82,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
-
 	
 	// -------------------------------------
 	//  HIT REACT

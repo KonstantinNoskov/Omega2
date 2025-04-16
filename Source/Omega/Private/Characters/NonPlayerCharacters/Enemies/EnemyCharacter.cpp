@@ -22,8 +22,6 @@
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	
-	//PrimaryActorTick.bCanEverTick = true;
 
 	// GAS
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
@@ -79,7 +77,6 @@ void AEnemyCharacter::BindCallbacks()
 		{	
 			OnHealthChanged.Broadcast(Data.NewValue);
 		});
-
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAS->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
 		{	
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
@@ -104,6 +101,13 @@ void AEnemyCharacter::BindCallbacks()
 // -------------------------------------
 //  ENEMY INTERFACE
 // -------------------------------------
+
+void AEnemyCharacter::Die_Implementation()
+{
+	Super::Die_Implementation();
+
+	HealthBar->GetUserWidgetObject()->SetVisibility(ESlateVisibility::Hidden);
+}
 
 void AEnemyCharacter::SetCombatTarget_Implementation(AActor* TargetActor)
 {
