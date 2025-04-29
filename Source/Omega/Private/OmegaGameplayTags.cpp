@@ -58,6 +58,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Magic Damage")
 			);
 
+	// Magic Resistance
+	GameplayTags.Attributes_Secondary_MagicResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.MagicResistance"),
+			FString("Magic damage resistance")
+			);
+
+
 	// Crit Chance
 	GameplayTags.Attributes_Secondary_CritChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.CritChance"),
@@ -194,5 +201,15 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Effects_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Effects.Death"),
 			FString("Tag granted when owner dies")
+			);
+
+
+	//  Character Types
+	// ===============================================================================================================
+
+	// Undead
+	GameplayTags.Character_Type_Undead = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.Types.Undead"),
+			FString("Defines this character as an undead")
 			);
 }

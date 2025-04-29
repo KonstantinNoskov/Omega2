@@ -98,8 +98,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ArmorResistance)
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
-	FGameplayAttributeData ElementalResistance;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ElementalResistance)
+	FGameplayAttributeData MagicResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MagicResistance)
 
 	
 	// -------------------------------------

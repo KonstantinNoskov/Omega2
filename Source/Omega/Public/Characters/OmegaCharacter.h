@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "PaperCharacter.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimationComponent.h"
@@ -50,7 +51,7 @@ public:
 
 protected:
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega|Movement")
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 
 public:
@@ -80,6 +81,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Omega|Character Tags")
+	FGameplayTagContainer CharacterTags;
+
 public:
 	
 	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
@@ -95,13 +99,13 @@ protected:
 	
 	void InitializeDefaultAttributes(const TSubclassOf<UGameplayEffect>& DefaultAttributesEffect, float Level) const;
 	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Default Attributes", DisplayName = "Primary Attributes")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Omega|Default Attributes", DisplayName = "Primary Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Default Attributes", DisplayName = "Secondary Attributes")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Omega|Default Attributes", DisplayName = "Secondary Attributes")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Default Attributes", DisplayName = "Tertiary Attributes")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Omega|Default Attributes", DisplayName = "Tertiary Attributes")
 	TSubclassOf<UGameplayEffect> DefaultTertiaryAttributes;
 
 	
