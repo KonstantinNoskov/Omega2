@@ -31,8 +31,6 @@ public class Omega : ModuleRules
 			"Slate",
 			"SlateCore",
 			"UMG",
-			"UMGEditor",
-			"UnrealEd",
 			
 			// AI
 			"AIModule", "EnhancedInput",

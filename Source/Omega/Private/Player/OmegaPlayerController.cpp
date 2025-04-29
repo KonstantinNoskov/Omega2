@@ -6,7 +6,6 @@
 #include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widgets/DamageTextComponent.h"
@@ -15,9 +14,6 @@
 AOmegaPlayerController::AOmegaPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	SetActorHiddenInGame(false);
-
-	
 }
 
 void AOmegaPlayerController::BeginPlay()
@@ -184,11 +180,6 @@ void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 }
 void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter)
 {
-	/*if (!IsValid(DamageTextComponentClass))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%hs: DamageTextComponentClass is not valid"), __FUNCTION__);
-	}*/
-	
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
 	{
 		// Create Damage widget, attach it to a damaged character
@@ -196,7 +187,6 @@ void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* Ta
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(this, DamageTextComponentClass);
 		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-		DamageText->CreationMethod = EComponentCreationMethod::Instance;
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
 		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s "), __FUNCTION__, *TargetCharacter->GetRootComponent()->GetName());
@@ -205,3 +195,7 @@ void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* Ta
 		DamageText->SetDamageText(DamageAmount);
 	}
 }
+
+
+
+
