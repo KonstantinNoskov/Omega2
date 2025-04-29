@@ -42,7 +42,6 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 	FGameplayTag Attributes_Secondary_PhysicalDamage;
 	FGameplayTag Attributes_Secondary_MagicDamage;
-	FGameplayTag Attributes_Secondary_MagicResistance;
 	FGameplayTag Attributes_Secondary_CritChance;
 
 
@@ -55,7 +54,7 @@ public:
 
 	
 	// -------------------------------------
-	//  ELEMENTAL STATUS
+	//  ELEMENTAL
 	// -------------------------------------
 	
 	FGameplayTag Elemental_Fire_OnFire;
@@ -93,12 +92,6 @@ public:
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
 	FGameplayTag Effects_Death;
-
-	//  Character Types
-	// ===============================================================================================================
-	
-	FGameplayTag Character_Type_Undead;
-
 	
 };
 

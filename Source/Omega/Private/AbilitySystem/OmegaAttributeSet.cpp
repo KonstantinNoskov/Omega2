@@ -14,18 +14,17 @@ UOmegaAttributeSet::UOmegaAttributeSet()
 	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 	
 	// Primary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,				GetStrengthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,			GetIntelligenceAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity,				GetDexterityAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,		GetStrengthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,	GetIntelligenceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity,		GetDexterityAttribute);
 	
 	// Secondary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,			GetMaxHealthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,				GetMaxManaAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MagicResistance,		GetMagicResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,	GetMaxHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,		GetMaxManaAttribute);
 
 	// Tertiary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,				GetHealthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,					GetManaAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,		GetHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,			GetManaAttribute);
 	
 }
 
@@ -79,7 +78,7 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 		const float LocalIncomingDamage = GetIncomingDamage();
 		SetIncomingDamage(0.f);
 		
-		if (LocalIncomingDamage >= 0.f)
+		if (LocalIncomingDamage > 0.f)
 		{
 			// Clamp Updated Health
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
