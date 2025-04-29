@@ -58,6 +58,31 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Magic Damage")
 			);
 
+	// Fire Resistance
+	GameplayTags.Attributes_Secondary_FireResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.FireResistance"),
+			FString("Fire damage resistance")
+			);
+	
+	// Cold Resistance
+	GameplayTags.Attributes_Secondary_ColdResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.ColdResistance"),
+			FString("Cold damage resistance")
+			);
+
+	// Poison Resistance
+	GameplayTags.Attributes_Secondary_PoisonResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.PoisonResistance"),
+			FString("Posion damage resistance")
+			);
+
+	// Lightning Resistance
+	GameplayTags.Attributes_Secondary_LightningResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.LightningResistance"),
+			FString("Lightning damage resistance")
+			);
+
+
 	// Crit Chance
 	GameplayTags.Attributes_Secondary_CritChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.CritChance"),
@@ -194,5 +219,15 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Effects_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Effects.Death"),
 			FString("Tag granted when owner dies")
+			);
+
+
+	//  Character Types
+	// ===============================================================================================================
+
+	// Undead
+	GameplayTags.Character_Type_Undead = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.Types.Undead"),
+			FString("Defines this character as an undead")
 			);
 }

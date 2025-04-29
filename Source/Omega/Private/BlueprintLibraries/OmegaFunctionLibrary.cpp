@@ -1,11 +1,8 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "BlueprintLibraries/OmegaFunctionLibrary.h"
+﻿#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
 #include "GameplayAbilitySpec.h"
 #include "PaperSprite.h"
-#include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "AbilitySystem/Data/CharacterTypeInfo.h"
 #include "Game/GameModes/OmegaGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
@@ -28,7 +25,7 @@ void UOmegaFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObje
 		return;
 	}
 	
-	UCharacterClassInfo* CharacterClassInfo = OmegaGameMode->CharacterClassInfo;
+	UCharacterTypeInfo* CharacterClassInfo = OmegaGameMode->CharacterClassInfo;
 	
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->CommonAbilities)
 	{

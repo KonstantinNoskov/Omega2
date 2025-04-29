@@ -96,10 +96,26 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData ArmorResistance;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ArmorResistance)
+
+	
+	//  Elemental Resistances
+	// ===============================================================================================================
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, FireResistance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ColdResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ColdResistance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData PoisonResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, PoisonResistance)
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
-	FGameplayAttributeData ElementalResistance;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ElementalResistance)
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, LightningResistance)
 
 	
 	// -------------------------------------

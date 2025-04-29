@@ -44,7 +44,14 @@ public:
 	FGameplayTag Attributes_Secondary_MagicDamage;
 	FGameplayTag Attributes_Secondary_CritChance;
 
-
+	
+	//  ELEMENTAL RESISTANCES
+	// ===============================================================================================================
+	FGameplayTag Attributes_Secondary_FireResistance;
+	FGameplayTag Attributes_Secondary_ColdResistance;
+	FGameplayTag Attributes_Secondary_PoisonResistance;
+	FGameplayTag Attributes_Secondary_LightningResistance;
+	
 	// -------------------------------------
 	//  TERTIARY ATTRIBUTE
 	// -------------------------------------

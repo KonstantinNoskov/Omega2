@@ -7,7 +7,6 @@
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
-#include "UI/Widgets/DamageTextComponent.h"
 
 AOmegaCharacter::AOmegaCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UOmegaMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -61,6 +60,9 @@ UOmegaMovementComponent* AOmegaCharacter::GetOmegaMovementComponent()
 // -------------------------------------
 
 void AOmegaCharacter::InitAbilityActorInfo() {}
+
+//  Apply Attributes as Gameplay Effect
+// ===============================================================================================================
 void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEffect>& DefaultAttributesEffect, float Level) const
 {
 	if (!AbilitySystemComponent)
@@ -75,13 +77,13 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
 }
+
 void AOmegaCharacter::AddCharacterAbilities()
 {
 	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
 	if (!OmegaASC) { UE_LOG(LogTemp, Error, TEXT("[%hs] OmegaAbilitySystem cast has failed! %s"), __FUNCTION__, *GetName()) }
 
 	OmegaASC->AddCharacterAbilities(StartupAbilities);
-	
 }
 
 
