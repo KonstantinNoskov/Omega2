@@ -99,6 +99,9 @@ public:
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
 	FGameplayTag Effects_Death;
-	
+
+	//  Character Types
+	// ===============================================================================================================
+	FGameplayTag Character_Type_Undead;
 };
 

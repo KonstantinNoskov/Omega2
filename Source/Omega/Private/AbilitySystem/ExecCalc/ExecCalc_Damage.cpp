@@ -20,8 +20,6 @@ static const OmegaDamageStatics& DamageStatics()
 	return DStatics;
 };
 
- 
-
 UExecCalc_Damage::UExecCalc_Damage()
 {
 	RelevantAttributesToCapture.Add(DamageStatics().FireResistanceDef);
@@ -44,7 +42,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	// Fill up Evaluated params
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
-	const FGameplayTagContainer* TargetTags = Spec.CapturedSourceTags.GetAggregatedTags();
+	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	
 	FAggregatorEvaluateParameters EvaluateParams;
 	EvaluateParams.SourceTags = SourceTags;
@@ -53,12 +51,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// Get Damage Set by Caller Magnitude
 	float Damage = Spec.GetSetByCallerMagnitude(GameplayTags.Damage);
 	
-	// Calculate magic block chance
-	float TargetMagicBlockChance = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().FireResistanceDef, EvaluateParams, TargetMagicBlockChance);
-	TargetMagicBlockChance = FMath::Max<float>(TargetMagicBlockChance, 0.f);
-	const bool bBlocked = FMath::RandRange(1, 100) < TargetMagicBlockChance;
-	Damage = bBlocked ? 0.f : Damage;
+	// Fire Resistance
+	float TargetFireResistance = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().FireResistanceDef, EvaluateParams, TargetFireResistance);
+	/*TargetFireResistance = FMath::Max<float>(TargetFireResistance, 0.f);
+	const bool bBlocked = FMath::RandRange(1, 100) < TargetFireResistance;
+	Damage = bBlocked ? Damage * (1 - TargetFireResistance / 100) : Damage;*/
+	Damage *= (100 - TargetFireResistance) / 100;
 	
 	FGameplayModifierEvaluatedData EvaluatedData(UOmegaAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage); 
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);

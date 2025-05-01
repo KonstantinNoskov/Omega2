@@ -16,5 +16,4 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetDamageText(float Damage);
-
 };

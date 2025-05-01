@@ -33,6 +33,7 @@ void AOmegaCharacter::PossessedBy(AController* NewController)
 	if (AbilitySystemComponent)
 	{
 		UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+		AddCharacterTags();
 	}
 }
 
@@ -59,10 +60,16 @@ UOmegaMovementComponent* AOmegaCharacter::GetOmegaMovementComponent()
 //  ABILITIES
 // -------------------------------------
 
-void AOmegaCharacter::InitAbilityActorInfo() {}
+void AOmegaCharacter::InitAbilityActorInfo()
+{
+	// Modify initialized attributes depending on which tags character has.
+	ModifyAttributesByTag();
+}
+
 
 //  Apply Attributes as Gameplay Effect
 // ===============================================================================================================
+
 void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEffect>& DefaultAttributesEffect, float Level) const
 {
 	if (!AbilitySystemComponent)
@@ -76,6 +83,8 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
+
+	
 }
 
 void AOmegaCharacter::AddCharacterAbilities()
@@ -86,6 +95,21 @@ void AOmegaCharacter::AddCharacterAbilities()
 	OmegaASC->AddCharacterAbilities(StartupAbilities);
 }
 
+void AOmegaCharacter::AddCharacterTags()
+{
+	if (CharacterTags.IsEmpty()) return;
+	
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
+	if (!OmegaASC) { UE_LOG(LogTemp, Error, TEXT("[%hs] OmegaAbilitySystem cast has failed! %s"), __FUNCTION__, *GetName()) }
+
+	OmegaASC->AddLooseGameplayTags(CharacterTags);
+}
+
+void AOmegaCharacter::ModifyAttributesByTag() const
+{
+	if (CharacterTags.IsEmpty() || !IsValid(AbilitySystemComponent)) return;
+	UOmegaFunctionLibrary::ModifyAttributesByTag(this, CharacterTags, AbilitySystemComponent);	
+}
 
 
 //  COMBAT

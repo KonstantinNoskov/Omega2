@@ -14,13 +14,15 @@
 AOmegaPlayerController::AOmegaPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 void AOmegaPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AssignMappingContext();	
+	AssignMappingContext();
+	SetActorHiddenInGame(false);
 }
 
 
@@ -185,10 +187,12 @@ void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* Ta
 		// Create Damage widget, attach it to a damaged character
 		// and detach it right away so the damage widget can float in the world space
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(this, DamageTextComponentClass);
-		DamageText->RegisterComponent();
+		DamageText->CreationMethod = EComponentCreationMethod::Instance;
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->RegisterComponent();
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-
+		
+		
 		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s "), __FUNCTION__, *TargetCharacter->GetRootComponent()->GetName());
 		
 		// Set Damage value

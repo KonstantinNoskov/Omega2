@@ -134,6 +134,8 @@ void AEnemyCharacter::InitAbilityActorInfo()
 		InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
 		InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 	}
+
+	Super::InitAbilityActorInfo();
 }
 
 void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewTagCount)

@@ -227,7 +227,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 
 	// Undead
 	GameplayTags.Character_Type_Undead = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Character.Types.Undead"),
+			FName("Character.Type.Undead"),
 			FString("Defines this character as an undead")
 			);
 }

@@ -3,7 +3,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "OmegaGameplayTags.h"
-#include "Characters/OmegaCharacter.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,8 +28,8 @@ UOmegaAttributeSet::UOmegaAttributeSet()
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_LightningResistance,		GetLightningResistanceAttribute);
 
 	// Tertiary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,				GetHealthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,					GetManaAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,					GetHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,						GetManaAttribute);
 	
 }
 
@@ -165,4 +164,5 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 		OutEffectProperties.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutEffectProperties.TargetAvatarActor);
 	}
 }
+
 

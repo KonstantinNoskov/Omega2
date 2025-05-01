@@ -39,7 +39,6 @@ public:
 
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
-
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTES
 	// -------------------------------------
