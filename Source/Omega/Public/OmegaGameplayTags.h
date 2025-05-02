@@ -24,6 +24,9 @@ private:
 
 public:
 
+	//TArray<FGameplayTag> DamageTypes;
+	
+
 	
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTE
@@ -47,10 +50,19 @@ public:
 	
 	//  ELEMENTAL RESISTANCES
 	// ===============================================================================================================
+	
 	FGameplayTag Attributes_Secondary_FireResistance;
 	FGameplayTag Attributes_Secondary_ColdResistance;
 	FGameplayTag Attributes_Secondary_PoisonResistance;
 	FGameplayTag Attributes_Secondary_LightningResistance;
+
+	//  DAMAGE TYPES
+	// ===============================================================================================================
+
+	FGameplayTag Damage_Type_Fire;
+	FGameplayTag Damage_Type_Cold;
+	FGameplayTag Damage_Type_Poison;
+	FGameplayTag Damage_Type_Lightning;
 	
 	// -------------------------------------
 	//  TERTIARY ATTRIBUTE
@@ -61,7 +73,7 @@ public:
 
 	
 	// -------------------------------------
-	//  ELEMENTAL
+	//  DEBUFF STATUSES 
 	// -------------------------------------
 	
 	FGameplayTag Elemental_Fire_OnFire;
@@ -100,8 +112,18 @@ public:
 	FGameplayTag Effects_HitReact;
 	FGameplayTag Effects_Death;
 
+	
 	//  Character Types
 	// ===============================================================================================================
 	FGameplayTag Character_Type_Undead;
+
+
+	//  COLORS
+	// ===============================================================================================================
+
+	FGameplayTag Colors_Damage_Immune;
+	FGameplayTag Colors_Damage_Blocked;
+	FGameplayTag Colors_Damage_Parry;
+	FGameplayTag Colors_Damage_Crit;
 };
 

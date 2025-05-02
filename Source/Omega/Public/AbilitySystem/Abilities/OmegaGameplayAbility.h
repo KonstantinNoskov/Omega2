@@ -13,8 +13,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "OmegaAbility|Input")
 	FGameplayTag StartupInputTag;
-
-	UPROPERTY(EditDefaultsOnly, Category = "OmegaAbility|Damage")
-	FScalableFloat AbilityDamageMagnitude;
-	
 };

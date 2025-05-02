@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "OmegaTypes.h"
 #include "Components/WidgetComponent.h"
 #include "DamageTextComponent.generated.h"
 
@@ -15,5 +16,5 @@ public:
 	UDamageTextComponent();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void SetDamageText(float Damage);
+	void SetDamageText(const FDamageEffectContextData& DamageHandle);
 };

@@ -4,6 +4,7 @@
 #include "GameplayTagContainer.h"
 #include "InputAction.h"
 #include "InputActionValue.h"
+#include "OmegaTypes.h"
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
@@ -139,7 +140,7 @@ private:
 public:
 	
 	UFUNCTION()
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowFloatingText(const FDamageEffectContextData& DamageHandle, ACharacter* TargetCharacter);
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;

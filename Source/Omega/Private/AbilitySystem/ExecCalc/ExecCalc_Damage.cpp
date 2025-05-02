@@ -1,8 +1,10 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
 
 struct OmegaDamageStatics
 {
@@ -50,14 +52,24 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	// Get Damage Set by Caller Magnitude
 	float Damage = Spec.GetSetByCallerMagnitude(GameplayTags.Damage);
+
+	// Damage Types
+	/*for (FGameplayTag DamageTypeTag : GameplayTags.DamageTypes)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag);
+		Damage += DamageTypeValue;
+	}*/
+
+	
 	
 	// Fire Resistance
 	float TargetFireResistance = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().FireResistanceDef, EvaluateParams, TargetFireResistance);
-	/*TargetFireResistance = FMath::Max<float>(TargetFireResistance, 0.f);
-	const bool bBlocked = FMath::RandRange(1, 100) < TargetFireResistance;
-	Damage = bBlocked ? Damage * (1 - TargetFireResistance / 100) : Damage;*/
 	Damage *= (100 - TargetFireResistance) / 100;
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetEffectContext();
+	UOmegaAbilitySystemLibrary::SetIsImmuneToEffect(EffectContextHandle,  TargetFireResistance == 100);
+
+	
 	
 	FGameplayModifierEvaluatedData EvaluatedData(UOmegaAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage); 
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);

@@ -106,10 +106,9 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Current amount of mana")
 			);
 
-
 	
 	//  ELEMENTAL
-	// -------------------------------------
+	// ===============================================================================================================
 
 	
 	// OnFire
@@ -136,9 +135,43 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Wet")
 			);
 
+
+	//  DAMAGE TYPES
+	// ===============================================================================================================
+	
+	/*GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Fire);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Cold);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Poison);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Lightning);*/
+
+		
+	// Fire
+	GameplayTags.Damage_Type_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Fire"),
+			FString("Fire")
+			);
+	
+	// Cold
+	GameplayTags.Damage_Type_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Cold"),
+			FString("Cold")
+			);
+
+	// Poison
+	GameplayTags.Damage_Type_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Poison"),
+			FString("Poison")
+			);
+
+	// Lightning
+	GameplayTags.Damage_Type_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Lightning"),
+			FString("Lightning")
+			);
+	
 	
 	//  MESSAGES
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	// Health Potions
 	GameplayTags.Message_HealthPotion_Small = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -229,5 +262,33 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Character_Type_Undead = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Character.Type.Undead"),
 			FString("Defines this character as an undead")
+			);
+
+
+	//  COLORS
+	// ===============================================================================================================
+
+	// Damage Immune
+	GameplayTags.Colors_Damage_Immune = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Immune"),
+			FString("Defines damage widget color when the target is immune to the damage")
+			);
+
+	// Damage Blocked
+	GameplayTags.Colors_Damage_Blocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Blocked"),
+			FString("Defines damage widget color when the target is Blocked the damage")
+			);
+
+	// Damage Parry
+	GameplayTags.Colors_Damage_Parry = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Parry"),
+			FString("Defines damage widget color when the target is Parry the damage")
+			);
+
+	// Damage Crit
+	GameplayTags.Colors_Damage_Crit = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Crit"),
+			FString("Defines damage widget color when the target is getting Crit damage")
 			);
 }

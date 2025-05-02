@@ -1,4 +1,4 @@
-﻿#include "AbilitySystem/Abilities/OmegaProjectileAbility.h"
+﻿ #include "AbilitySystem/Abilities/OmegaProjectileAbility.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
@@ -47,16 +47,20 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
 	EffectContextHandle.SetAbility(this);
 	EffectContextHandle.AddSourceObject(Projectile);
-
+	
 	// Set Projectile Effect spec 
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 	
 	// Get GameplayTags
 	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 
-	// Damage depends on ability level 
-	const float ScaledDamage = AbilityDamageMagnitude.GetValueAtLevel(GetAbilityLevel());
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, ScaledDamage);
+	// Damage depends on ability level
+
+	for (auto& Pair : DamageTypes)
+	{
+		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
+	}
 	
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 	

@@ -1,13 +1,13 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "OmegaGameplayAbility.h"
+#include "OmegaDamageAbility.h"
 #include "OmegaProjectileAbility.generated.h"
 
 class AOmegaProjectile;
 
 UCLASS()
-class OMEGA_API UOmegaProjectileAbility : public UOmegaGameplayAbility
+class OMEGA_API UOmegaProjectileAbility : public UOmegaDamageAbility
 {
 	GENERATED_BODY()
 
@@ -17,7 +17,4 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AOmegaProjectile> ProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly )
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

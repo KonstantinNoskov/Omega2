@@ -2,7 +2,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
+#include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
+#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -117,7 +119,13 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
 				if(OmegaPC)
 				{	
-					OmegaPC->ShowDamageNumber(LocalIncomingDamage, EffectProperties.TargetCharacter);
+					FDamageEffectContextData DamageHandle;
+					DamageHandle.Damage = LocalIncomingDamage;
+					DamageHandle.bImmune = UOmegaAbilitySystemLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bBlocked = UOmegaAbilitySystemLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bParried = UOmegaAbilitySystemLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					
+					OmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
 				}				
 			}
 		}
