@@ -55,7 +55,6 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 
 	// Damage depends on ability level
-
 	for (auto& Pair : DamageTypes)
 	{
 		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());

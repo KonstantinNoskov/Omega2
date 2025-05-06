@@ -24,9 +24,12 @@ private:
 
 public:
 
-	//TArray<FGameplayTag> DamageTypes;
+	/*
+	 * @key			Damage Type tag
+	 * @value		Damage Resistance tag 
+	 */
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	
-
 	
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTE
@@ -48,28 +51,31 @@ public:
 	FGameplayTag Attributes_Secondary_CritChance;
 
 	
-	//  ELEMENTAL RESISTANCES
-	// ===============================================================================================================
-	
-	FGameplayTag Attributes_Secondary_FireResistance;
-	FGameplayTag Attributes_Secondary_ColdResistance;
-	FGameplayTag Attributes_Secondary_PoisonResistance;
-	FGameplayTag Attributes_Secondary_LightningResistance;
-
-	//  DAMAGE TYPES
-	// ===============================================================================================================
-
-	FGameplayTag Damage_Type_Fire;
-	FGameplayTag Damage_Type_Cold;
-	FGameplayTag Damage_Type_Poison;
-	FGameplayTag Damage_Type_Lightning;
-	
 	// -------------------------------------
 	//  TERTIARY ATTRIBUTE
 	// -------------------------------------
 
 	FGameplayTag Attributes_Tertiary_Health;
 	FGameplayTag Attributes_Tertiary_Mana;
+
+	//  DAMAGE TYPES
+	// ===============================================================================================================
+
+	FGameplayTag Damage_Type_Physical;
+	FGameplayTag Damage_Type_Fire;
+	FGameplayTag Damage_Type_Cold;
+	FGameplayTag Damage_Type_Poison;
+	FGameplayTag Damage_Type_Lightning;
+
+	
+	//  DAMAGE RESISTANCES
+	// ===============================================================================================================
+
+	FGameplayTag Attributes_Secondary_Resistance_Physical;
+	FGameplayTag Attributes_Secondary_Resistance_Fire;
+	FGameplayTag Attributes_Secondary_Resistance_Cold;
+	FGameplayTag Attributes_Secondary_Resistance_Poison;
+	FGameplayTag Attributes_Secondary_Resistance_Lightning;
 
 	
 	// -------------------------------------

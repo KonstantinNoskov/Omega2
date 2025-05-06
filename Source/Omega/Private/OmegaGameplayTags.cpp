@@ -59,25 +59,25 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			);
 
 	// Fire Resistance
-	GameplayTags.Attributes_Secondary_FireResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.FireResistance"),
 			FString("Fire damage resistance")
 			);
 	
 	// Cold Resistance
-	GameplayTags.Attributes_Secondary_ColdResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_Resistance_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.ColdResistance"),
 			FString("Cold damage resistance")
 			);
 
 	// Poison Resistance
-	GameplayTags.Attributes_Secondary_PoisonResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_Resistance_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.PoisonResistance"),
 			FString("Posion damage resistance")
 			);
 
 	// Lightning Resistance
-	GameplayTags.Attributes_Secondary_LightningResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.LightningResistance"),
 			FString("Lightning damage resistance")
 			);
@@ -138,30 +138,32 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 
 	//  DAMAGE TYPES
 	// ===============================================================================================================
-	
-	/*GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Fire);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Cold);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Poison);
-	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Type_Lightning);*/
 
-		
+	// Physical
+	GameplayTags.Damage_Type_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Physical"),
+			FString("Physical")
+			);
+	
 	// Fire
 	GameplayTags.Damage_Type_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Damage.Type.Fire"),
 			FString("Fire")
 			);
-	
+		
 	// Cold
 	GameplayTags.Damage_Type_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Damage.Type.Cold"),
 			FString("Cold")
 			);
+	
 
 	// Poison
 	GameplayTags.Damage_Type_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Damage.Type.Poison"),
 			FString("Poison")
 			);
+	
 
 	// Lightning
 	GameplayTags.Damage_Type_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -169,6 +171,48 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Lightning")
 			);
 	
+
+
+	//  DAMAGE RESISTANCES
+	// ===============================================================================================================
+
+	// Physical
+	GameplayTags.Attributes_Secondary_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Physical"),
+			FString("Physical Resistance")
+			);
+
+	// Fire
+	GameplayTags.Attributes_Secondary_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Fire"),
+			FString("Fire Resistance")
+			);
+
+	// Cold
+	GameplayTags.Attributes_Secondary_Resistance_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Cold"),
+			FString("Cold Resistance")
+			);
+	
+	// Poison
+	GameplayTags.Attributes_Secondary_Resistance_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Poison"),
+			FString("Poison Resistance")
+			);
+
+	// Lightning
+	GameplayTags.Attributes_Secondary_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Lightning"),
+			FString("Lightning Resistance")
+			);
+
+	
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Physical, GameplayTags.Attributes_Secondary_Resistance_Physical);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Fire, GameplayTags.Attributes_Secondary_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Cold, GameplayTags.Attributes_Secondary_Resistance_Cold);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Poison, GameplayTags.Attributes_Secondary_Resistance_Poison);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
+
 	
 	//  MESSAGES
 	// ===============================================================================================================

@@ -15,6 +15,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Damage")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Damage", meta=(ForceInlineRow))
 	TMap<FGameplayTag, FScalableFloat> DamageTypes;
 };

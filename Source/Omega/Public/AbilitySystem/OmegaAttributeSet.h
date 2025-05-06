@@ -97,9 +97,27 @@ public:
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ArmorResistance)
 
 	
-	//  Elemental Resistances
+	// -------------------------------------
+	//  TERTIARY ATTRIBUTES
+	// -------------------------------------
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
+	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Health)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
+	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Mana)
+
+
+	//  DAMAGE RESISTANCES
 	// ===============================================================================================================
 
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, PhysicalResistance)
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData FireResistance;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, FireResistance)
@@ -115,19 +133,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData LightningResistance;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, LightningResistance)
-
-	
-	// -------------------------------------
-	//  TERTIARY ATTRIBUTES
-	// -------------------------------------
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
-	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Health)
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
-	FGameplayAttributeData Mana;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Mana)
 
 	
 	// -------------------------------------

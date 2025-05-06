@@ -22,16 +22,17 @@ UOmegaAttributeSet::UOmegaAttributeSet()
 	// Secondary Attributes
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,				GetMaxHealthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,					GetMaxManaAttribute);
-
-	// Elemental Resistances
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_FireResistance,			GetFireResistanceAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_ColdResistance,			GetColdResistanceAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_PoisonResistance,		GetPoisonResistanceAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_LightningResistance,		GetLightningResistanceAttribute);
-
+	
 	// Tertiary Attributes
 	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,					GetHealthAttribute);
 	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,						GetManaAttribute);
+
+	// Damage Resistances
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Physical,		GetPhysicalResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Fire,			GetFireResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Cold,			GetColdResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Poison,		GetPoisonResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Lightning,	GetLightningResistanceAttribute);
 	
 }
 
@@ -118,9 +119,10 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			{
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
 				if(OmegaPC)
-				{	
+				{
+					
 					FDamageEffectContextData DamageHandle;
-					DamageHandle.Damage = LocalIncomingDamage;
+					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
 					DamageHandle.bImmune = UOmegaAbilitySystemLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
 					DamageHandle.bBlocked = UOmegaAbilitySystemLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
 					DamageHandle.bParried = UOmegaAbilitySystemLibrary::IsParryEffect(EffectProperties.EffectContextHandle);

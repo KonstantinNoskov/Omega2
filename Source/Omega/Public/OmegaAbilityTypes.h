@@ -19,7 +19,7 @@ struct FOmegaGameplayEffectContext : public FGameplayEffectContext
 	FORCEINLINE bool IsImmune() const		{ return bImmune; }
 	FORCEINLINE bool IsParried() const		{ return bParried; }
 	FORCEINLINE bool IsBlocked() const		{ return bBlocked; }
-
+	
 	// Setters
 	void SetIsImmune(bool InbImmune)		{ bImmune = InbImmune; }
 	void SetIsParried(bool InbParried)		{ bImmune = InbParried; }
