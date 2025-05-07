@@ -37,5 +37,8 @@ public:
 	UPaperZDAnimSequence* GetDeathAnimation() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UPaperZDAnimSequence* GetAttackAnimation() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Die();
 };

@@ -147,6 +147,7 @@ public:
 	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override		{ return PaperAnimation->GetAnimInstance(); }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override	{ return HitReactAnimation; }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override			{ return DeathAnimation; }
+	FORCEINLINE virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() const override		{ return AttackAnimation; }
 
 	virtual void Die_Implementation() override;
 
@@ -157,5 +158,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	TObjectPtr<UPaperZDAnimSequence> DeathAnimation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
+	TObjectPtr<UPaperZDAnimSequence> AttackAnimation;
+
+
 	
 };

@@ -25,7 +25,7 @@ void UOmegaAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& In
 	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) continue;
 		
 		
 		AbilitySpecInputPressed(AbilitySpec);
