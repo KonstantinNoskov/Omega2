@@ -24,6 +24,12 @@ private:
 
 public:
 
+	/*
+	 * @key			Damage Type tag
+	 * @value		Damage Resistance tag 
+	 */
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	
 	
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTE
@@ -44,7 +50,7 @@ public:
 	FGameplayTag Attributes_Secondary_MagicDamage;
 	FGameplayTag Attributes_Secondary_CritChance;
 
-
+	
 	// -------------------------------------
 	//  TERTIARY ATTRIBUTE
 	// -------------------------------------
@@ -52,9 +58,28 @@ public:
 	FGameplayTag Attributes_Tertiary_Health;
 	FGameplayTag Attributes_Tertiary_Mana;
 
+	//  DAMAGE TYPES
+	// ===============================================================================================================
+
+	FGameplayTag Damage_Type_Physical;
+	FGameplayTag Damage_Type_Fire;
+	FGameplayTag Damage_Type_Cold;
+	FGameplayTag Damage_Type_Poison;
+	FGameplayTag Damage_Type_Lightning;
+
+	
+	//  DAMAGE RESISTANCES
+	// ===============================================================================================================
+
+	FGameplayTag Attributes_Secondary_Resistance_Physical;
+	FGameplayTag Attributes_Secondary_Resistance_Fire;
+	FGameplayTag Attributes_Secondary_Resistance_Cold;
+	FGameplayTag Attributes_Secondary_Resistance_Poison;
+	FGameplayTag Attributes_Secondary_Resistance_Lightning;
+
 	
 	// -------------------------------------
-	//  ELEMENTAL
+	//  DEBUFF STATUSES 
 	// -------------------------------------
 	
 	FGameplayTag Elemental_Fire_OnFire;
@@ -92,6 +117,19 @@ public:
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
 	FGameplayTag Effects_Death;
+
 	
+	//  Character Types
+	// ===============================================================================================================
+	FGameplayTag Character_Type_Undead;
+
+
+	//  COLORS
+	// ===============================================================================================================
+
+	FGameplayTag Colors_Damage_Immune;
+	FGameplayTag Colors_Damage_Blocked;
+	FGameplayTag Colors_Damage_Parry;
+	FGameplayTag Colors_Damage_Crit;
 };
 

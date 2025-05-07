@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "PaperCharacter.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimationComponent.h"
@@ -10,6 +11,7 @@
 
 #include "OmegaCharacter.generated.h"
 
+struct FGameplayTagContainer;
 class UDamageTextComponent;
 class UPaperZDAnimSequence;
 class UGameplayAbility;
@@ -61,11 +63,10 @@ public:
 protected:
 	
 	/**
-	 * Assign owner & avatar actor to Ability system 
+	 * Assign owner & avatar actor to Ability system		
 	 */
 	virtual void InitAbilityActorInfo();
 	
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
 
@@ -79,12 +80,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags")
+	FGameplayTagContainer CharacterTags;
 
 public:
 	
 	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
 
-
+	
 	//  ATTRIBUTE SET
 	// ===============================================================================================================
 
@@ -112,6 +116,8 @@ protected:
 protected:
 
 	void AddCharacterAbilities();
+	void AddCharacterTags();
+	void ModifyAttributesByTag() const;
 
 public:
 	

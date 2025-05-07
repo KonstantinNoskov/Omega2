@@ -39,7 +39,6 @@ public:
 
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
-
 	// -------------------------------------
 	//  PRIMARY ATTRIBUTES
 	// -------------------------------------
@@ -96,10 +95,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData ArmorResistance;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ArmorResistance)
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
-	FGameplayAttributeData ElementalResistance;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ElementalResistance)
 
 	
 	// -------------------------------------
@@ -113,6 +108,31 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Mana)
+
+
+	//  DAMAGE RESISTANCES
+	// ===============================================================================================================
+
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, PhysicalResistance)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, FireResistance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ColdResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ColdResistance)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData PoisonResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, PoisonResistance)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, LightningResistance)
 
 	
 	// -------------------------------------

@@ -4,7 +4,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "OmegaGameMode.generated.h"
 
-class UCharacterClassInfo;
+class UDamageWidgetData;
+class UCharacterDefaultInfo;
 
 UCLASS()
 class OMEGA_API AOmegaGameMode : public AGameModeBase
@@ -14,5 +15,8 @@ class OMEGA_API AOmegaGameMode : public AGameModeBase
 public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
-	UCharacterClassInfo* CharacterClassInfo;
+	UCharacterDefaultInfo* CharacterClassInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|UI")
+	UDamageWidgetData* DamageWidgetData;
 };

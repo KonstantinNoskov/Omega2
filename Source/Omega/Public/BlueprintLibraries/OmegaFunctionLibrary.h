@@ -38,5 +38,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Omega Function Library|Character Class Defaults")
 	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
+
+	/**
+	 * 
+	 * @param WorldContextObject
+	 * @param InTagContainer
+	 * @param ASC 
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Omega Function Library|Character Class Defaults")
+	static void ModifyAttributesByTag(const UObject* WorldContextObject, const FGameplayTagContainer& InTagContainer, UAbilitySystemComponent* ASC);
 	
 };

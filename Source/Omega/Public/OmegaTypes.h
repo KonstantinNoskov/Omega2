@@ -80,7 +80,29 @@ struct FEffectProperties
 	
 };
 
+/*
+ * 
+ */
+USTRUCT(BlueprintType, Blueprintable)
+struct FDamageEffectContextData
+{
+	GENERATED_BODY()
 
+	FDamageEffectContextData(){}
+
+	UPROPERTY(BlueprintReadOnly)
+	float Damage = 0.f;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bImmune = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bBlocked = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bParried = false;
+	
+};
 
 
 

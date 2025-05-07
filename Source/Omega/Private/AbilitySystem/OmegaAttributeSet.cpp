@@ -2,8 +2,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
+#include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
-#include "Characters/OmegaCharacter.h"
+#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,17 +15,24 @@ UOmegaAttributeSet::UOmegaAttributeSet()
 	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 	
 	// Primary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,		GetStrengthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,	GetIntelligenceAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity,		GetDexterityAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,					GetStrengthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,				GetIntelligenceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity,					GetDexterityAttribute);
 	
 	// Secondary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,	GetMaxHealthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,		GetMaxManaAttribute);
-
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,				GetMaxHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,					GetMaxManaAttribute);
+	
 	// Tertiary Attributes
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,		GetHealthAttribute);
-	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,			GetManaAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,					GetHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,						GetManaAttribute);
+
+	// Damage Resistances
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Physical,		GetPhysicalResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Fire,			GetFireResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Cold,			GetColdResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Poison,		GetPoisonResistanceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_Resistance_Lightning,	GetLightningResistanceAttribute);
 	
 }
 
@@ -78,13 +86,11 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 		const float LocalIncomingDamage = GetIncomingDamage();
 		SetIncomingDamage(0.f);
 		
-		if (LocalIncomingDamage > 0.f)
+		if (LocalIncomingDamage >= 0.f)
 		{
 			// Clamp Updated Health
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-
-			UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("%f"),GetHealth())); 
 			
 			// Check for fatal damage
 			const bool bFatal = NewHealth <= 0.f;
@@ -113,8 +119,15 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			{
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
 				if(OmegaPC)
-				{	
-					OmegaPC->ShowDamageNumber(LocalIncomingDamage, EffectProperties.TargetCharacter);
+				{
+					
+					FDamageEffectContextData DamageHandle;
+					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
+					DamageHandle.bImmune = UOmegaAbilitySystemLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bBlocked = UOmegaAbilitySystemLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bParried = UOmegaAbilitySystemLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					
+					OmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
 				}				
 			}
 		}
@@ -161,4 +174,5 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 		OutEffectProperties.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutEffectProperties.TargetAvatarActor);
 	}
 }
+
 

@@ -58,6 +58,31 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Magic Damage")
 			);
 
+	// Fire Resistance
+	GameplayTags.Attributes_Secondary_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.FireResistance"),
+			FString("Fire damage resistance")
+			);
+	
+	// Cold Resistance
+	GameplayTags.Attributes_Secondary_Resistance_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.ColdResistance"),
+			FString("Cold damage resistance")
+			);
+
+	// Poison Resistance
+	GameplayTags.Attributes_Secondary_Resistance_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.PoisonResistance"),
+			FString("Posion damage resistance")
+			);
+
+	// Lightning Resistance
+	GameplayTags.Attributes_Secondary_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.LightningResistance"),
+			FString("Lightning damage resistance")
+			);
+
+
 	// Crit Chance
 	GameplayTags.Attributes_Secondary_CritChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.CritChance"),
@@ -81,10 +106,9 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Current amount of mana")
 			);
 
-
 	
 	//  ELEMENTAL
-	// -------------------------------------
+	// ===============================================================================================================
 
 	
 	// OnFire
@@ -111,9 +135,87 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Wet")
 			);
 
+
+	//  DAMAGE TYPES
+	// ===============================================================================================================
+
+	// Physical
+	GameplayTags.Damage_Type_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Physical"),
+			FString("Physical")
+			);
+	
+	// Fire
+	GameplayTags.Damage_Type_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Fire"),
+			FString("Fire")
+			);
+		
+	// Cold
+	GameplayTags.Damage_Type_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Cold"),
+			FString("Cold")
+			);
+	
+
+	// Poison
+	GameplayTags.Damage_Type_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Poison"),
+			FString("Poison")
+			);
+	
+
+	// Lightning
+	GameplayTags.Damage_Type_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Lightning"),
+			FString("Lightning")
+			);
+	
+
+
+	//  DAMAGE RESISTANCES
+	// ===============================================================================================================
+
+	// Physical
+	GameplayTags.Attributes_Secondary_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Physical"),
+			FString("Physical Resistance")
+			);
+
+	// Fire
+	GameplayTags.Attributes_Secondary_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Fire"),
+			FString("Fire Resistance")
+			);
+
+	// Cold
+	GameplayTags.Attributes_Secondary_Resistance_Cold = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Cold"),
+			FString("Cold Resistance")
+			);
+	
+	// Poison
+	GameplayTags.Attributes_Secondary_Resistance_Poison = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Poison"),
+			FString("Poison Resistance")
+			);
+
+	// Lightning
+	GameplayTags.Attributes_Secondary_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Lightning"),
+			FString("Lightning Resistance")
+			);
+
+	
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Physical, GameplayTags.Attributes_Secondary_Resistance_Physical);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Fire, GameplayTags.Attributes_Secondary_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Cold, GameplayTags.Attributes_Secondary_Resistance_Cold);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Poison, GameplayTags.Attributes_Secondary_Resistance_Poison);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
+
 	
 	//  MESSAGES
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	// Health Potions
 	GameplayTags.Message_HealthPotion_Small = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -194,5 +296,43 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Effects_Death = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Effects.Death"),
 			FString("Tag granted when owner dies")
+			);
+
+
+	//  Character Types
+	// ===============================================================================================================
+
+	// Undead
+	GameplayTags.Character_Type_Undead = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.Type.Undead"),
+			FString("Defines this character as an undead")
+			);
+
+
+	//  COLORS
+	// ===============================================================================================================
+
+	// Damage Immune
+	GameplayTags.Colors_Damage_Immune = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Immune"),
+			FString("Defines damage widget color when the target is immune to the damage")
+			);
+
+	// Damage Blocked
+	GameplayTags.Colors_Damage_Blocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Blocked"),
+			FString("Defines damage widget color when the target is Blocked the damage")
+			);
+
+	// Damage Parry
+	GameplayTags.Colors_Damage_Parry = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Parry"),
+			FString("Defines damage widget color when the target is Parry the damage")
+			);
+
+	// Damage Crit
+	GameplayTags.Colors_Damage_Crit = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Colors.Damage.Crit"),
+			FString("Defines damage widget color when the target is getting Crit damage")
 			);
 }

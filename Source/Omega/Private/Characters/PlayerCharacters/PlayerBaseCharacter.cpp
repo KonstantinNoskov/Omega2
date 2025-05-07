@@ -129,9 +129,13 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
 
 	// Set player's default primary attributes 
-	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultPrimaryAttributes,	1.f);
+	InitializeDefaultAttributes(DefaultSecondaryAttributes,	1.f);
+	InitializeDefaultAttributes(DefaultTertiaryAttributes,	1.f);
+
+
+	// Modify attributes depending on character tags 
+	Super::InitAbilityActorInfo();
 
 	if (AOmegaPlayerController* OmegaPlayerController = Cast<AOmegaPlayerController>(GetController()))
 	{

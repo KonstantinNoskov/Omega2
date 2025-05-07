@@ -14,13 +14,15 @@
 AOmegaPlayerController::AOmegaPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 void AOmegaPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AssignMappingContext();	
+	AssignMappingContext();
+	SetActorHiddenInGame(false);
 }
 
 
@@ -50,12 +52,12 @@ void AOmegaPlayerController::SetupInputComponent()
 	UOmegaInputComponent* OmegaInputComponent = Cast<UOmegaInputComponent>(InputComponent);
 	if (!OmegaInputComponent) return;
 
-	OmegaInputComponent->BindAction(MoveAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
-	OmegaInputComponent->BindAction(JumpAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
+	OmegaInputComponent->BindAction(MoveAction,		ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
+	OmegaInputComponent->BindAction(JumpAction,		ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
 	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
 	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
-	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
-	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
+	OmegaInputComponent->BindAction(DashAction,		ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
+	OmegaInputComponent->BindAction(DashAction,		ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
 
 	OmegaInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagHeld, &ThisClass::AbilityInputTagReleased);
 }
@@ -178,21 +180,22 @@ void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 		GetOmegaMovementComponent()->HandleDash(InputActionValue);
 	}
 }
-void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter)
+void AOmegaPlayerController::ShowFloatingText(const FDamageEffectContextData& DamageHandle, ACharacter* TargetCharacter)
 {
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
 	{
 		// Create Damage widget, attach it to a damaged character
 		// and detach it right away so the damage widget can float in the world space
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(this, DamageTextComponentClass);
-		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->RegisterComponent();
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-
+		
+		
 		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s "), __FUNCTION__, *TargetCharacter->GetRootComponent()->GetName());
 		
 		// Set Damage value
-		DamageText->SetDamageText(DamageAmount);
+		DamageText->SetDamageText(DamageHandle);
 	}
 }
 
