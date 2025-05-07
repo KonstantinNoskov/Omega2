@@ -4,7 +4,7 @@
 #include "GameplayEffectExtension.h"
 #include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
-#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -123,9 +123,9 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 					
 					FDamageEffectContextData DamageHandle;
 					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
-					DamageHandle.bImmune = UOmegaAbilitySystemLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
-					DamageHandle.bBlocked = UOmegaAbilitySystemLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
-					DamageHandle.bParried = UOmegaAbilitySystemLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bImmune = UOmegaFunctionLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bBlocked = UOmegaFunctionLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bParried = UOmegaFunctionLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
 					
 					OmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
 				}				

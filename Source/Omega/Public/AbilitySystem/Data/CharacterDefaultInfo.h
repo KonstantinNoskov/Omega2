@@ -9,29 +9,20 @@
 class UGameplayAbility;
 class UGameplayEffect;
 
-/*USTRUCT()
-struct FCharacterTypeDefaultInfo
+UENUM(BlueprintType)
+enum class ECharacterClass : uint8
 {
-	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TSubclassOf<UGameplayEffect> PrimaryAttributes;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TSubclassOf<UGameplayEffect> SecondaryAttributes;
-};*/
+	Melee  UMETA(DisplayName = "Melee"),
+	Range  UMETA(DisplayName = "Range")
+};
 
 USTRUCT()
-struct FCharacterTypeDefaultInfo
+struct FCharacterTypeInfo
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TSubclassOf<UGameplayEffect> PrimaryAttributes;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TSubclassOf<UGameplayEffect> SecondaryAttributes;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
+	TSubclassOf<UGameplayEffect> AttributesModifyEffect;
 };
 
 UCLASS()
@@ -40,18 +31,15 @@ class OMEGA_API UCharacterDefaultInfo : public UDataAsset
 	GENERATED_BODY()
 
 public:
- 
-	UPROPERTY(EditDefaultsOnly, Category = "Modify Attributes by Tag", meta=(ForceInlineRow))
-	TMap<FGameplayTag, TSubclassOf<UGameplayEffect>> AttributeByTagMap;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TMap<FGameplayTag, FCharacterTypeDefaultInfo> CharacterClassInformation;
-	
-	const FCharacterTypeDefaultInfo& GetClassDefaultInfo(const FGameplayTag& CharacterClass);
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
-	TSubclassOf<UGameplayEffect> SecondaryAttributes;
 
+	const FCharacterTypeInfo& GetCharacterTypeInfo(const FGameplayTag& CharacterTypeClass);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults", DisplayName = "ClassAbilities", meta=(ForceInlineRow))
+	TMap<FGameplayTag, TSubclassOf<UGameplayAbility>> CharacterClassAbilities;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults", DisplayName = "TypeInfo", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FCharacterTypeInfo> CharacterTypeInfo;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Common Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 };

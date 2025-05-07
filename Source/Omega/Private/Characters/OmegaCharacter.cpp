@@ -31,7 +31,7 @@ void AOmegaCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	if (AbilitySystemComponent)
-	{
+	{	
 		UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 		AddCharacterTags();
 	}
@@ -97,18 +97,18 @@ void AOmegaCharacter::AddCharacterAbilities()
 
 void AOmegaCharacter::AddCharacterTags()
 {
-	if (CharacterTags.IsEmpty()) return;
+	if (CharacterTypeTags.IsEmpty()) return;
 	
 	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
 	if (!OmegaASC) { UE_LOG(LogTemp, Error, TEXT("[%hs] OmegaAbilitySystem cast has failed! %s"), __FUNCTION__, *GetName()) }
 
-	OmegaASC->AddLooseGameplayTags(CharacterTags);
+	OmegaASC->AddLooseGameplayTags(CharacterTypeTags);
 }
 
 void AOmegaCharacter::ModifyAttributesByTag() const
 {
-	if (CharacterTags.IsEmpty() || !IsValid(AbilitySystemComponent)) return;
-	UOmegaFunctionLibrary::ModifyAttributesByTag(this, CharacterTags, AbilitySystemComponent);	
+	if (CharacterTypeTags.IsEmpty() || !IsValid(AbilitySystemComponent)) return;
+	UOmegaFunctionLibrary::ModifyAttributesByTag(this, CharacterTypeTags, AbilitySystemComponent);	
 }
 
 

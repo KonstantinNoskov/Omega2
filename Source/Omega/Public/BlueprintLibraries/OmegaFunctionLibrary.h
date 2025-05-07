@@ -34,10 +34,11 @@ public:
 	/**
 	 * 
 	 * @param WorldContextObject 
-	 * @param ASC 
+	 * @param ASC
+	 * @param CharacterAttackType 
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Omega Function Library|Character Class Defaults")
-	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
+	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, const FGameplayTag& CharacterAttackType = FGameplayTag());
 
 	/**
 	 * 
@@ -47,5 +48,35 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Omega Function Library|Character Class Defaults")
 	static void ModifyAttributesByTag(const UObject* WorldContextObject, const FGameplayTagContainer& InTagContainer, UAbilitySystemComponent* ASC);
-	
+
+	/**
+	 * 
+	 * @param ContextHandle
+	 *
+	 * @return true if attribute set is immune to a gameplay effect  
+	 */
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
+	static bool IsImmuneToEffect(const FGameplayEffectContextHandle& ContextHandle);
+
+	/**
+	 *	Set Immune to effect status
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Omega Ability System Library")
+	static void SetIsImmuneToEffect(UPARAM(ref) FGameplayEffectContextHandle& ContextHandle, bool bIsImmuneToEffect);
+
+	/**
+	 * @param ContextHandle
+	 *
+	 * @return true if 
+	 */
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
+	static bool IsBlockedEffect(const FGameplayEffectContextHandle& ContextHandle);
+
+	/**
+	 * @param ContextHandle
+	 *
+	 * @return true if 
+	 */
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
+	static bool IsParryEffect(const FGameplayEffectContextHandle& ContextHandle);
 };

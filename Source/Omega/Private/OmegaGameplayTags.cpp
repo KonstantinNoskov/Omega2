@@ -213,6 +213,19 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Poison, GameplayTags.Attributes_Secondary_Resistance_Poison);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
 
+	// ===============================================================================================================
+	//  ABILITIES TYPES
+	// ===============================================================================================================
+
+	// Attack
+	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Attack"),
+			FString("Melee Attack")
+			);
+
+	
+	// ===============================================================================================================
+	
 	
 	//  MESSAGES
 	// ===============================================================================================================
@@ -308,7 +321,26 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Defines this character as an undead")
 			);
 
+	
+	// ===============================================================================================================
+	//  ATTACK TYPES
+	// ===============================================================================================================
 
+	// Melee
+	GameplayTags.Character_AttackType_Melee = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.AttackType.Melee"),
+			FString("Melee Attack")
+			);
+
+	// Range
+	GameplayTags.Character_AttackType_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.AttackType.Range"),
+			FString("Range Attack")
+			);
+
+	// --------------------------------------------------------------------------------------------------------------
+
+	
 	//  COLORS
 	// ===============================================================================================================
 

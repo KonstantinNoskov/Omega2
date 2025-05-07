@@ -60,10 +60,10 @@ void AEnemyCharacter::BeginPlay()
 		OmegaUserWidget->SetWidgetController(this);
 	}
 
-	UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	//UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 	
 	BindCallbacks();
-}
+}		
 
 // -------------------------------------
 //  SETUP

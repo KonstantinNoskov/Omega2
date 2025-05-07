@@ -6,7 +6,7 @@
 #include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
-#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
 struct OmegaDamageStatics
 {

@@ -81,8 +81,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags")
-	FGameplayTagContainer CharacterTags;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags", DisplayName = "Type")
+	FGameplayTagContainer CharacterTypeTags;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags", DisplayName = "AttackType")
+	FGameplayTagContainer CharacterAttackTypeTags;
 
 public:
 	

@@ -3,6 +3,7 @@
 #include "OmegaCollisionChannels.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
@@ -78,7 +79,6 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	// GAS
 	InitAbilityActorInfo();
 	AddCharacterAbilities();
-	
 	BindDependencies(NewController);
 }
 
