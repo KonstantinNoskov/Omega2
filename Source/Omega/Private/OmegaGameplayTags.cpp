@@ -213,18 +213,47 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Poison, GameplayTags.Attributes_Secondary_Resistance_Poison);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
 
-	// ===============================================================================================================
-	//  ABILITIES TYPES
+	
+	//  COMBAT
 	// ===============================================================================================================
 
 	// Attack
-	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Abilities.Attack"),
-			FString("Melee Attack")
+	GameplayTags.Combat_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack"),
+			FString("Defines where character is attacking")
 			);
 
+	// Melee Attack
+	GameplayTags.Combat_Attack_Melee = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Melee"),
+			FString("Defines where character is using melee attack")
+			);
+
+	// Range Attack
+	GameplayTags.Combat_Attack_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Range"),
+			FString("Defines where character is using Range attack")
+			);
+
+	// Open Combo Window
+	GameplayTags.Combat_Attack_Combo_WindowOpened = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.WindowOpened"),
+			FString("Defines when window for activating next combo attack is opened")
+			);
+
+	// Next Combo Attack Activated
+	GameplayTags.Combat_Attack_Combo_Activated = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.Activated"),
+			FString("Defines when next combo attack is activated")
+			);
+
+	// Combo Attack Count
+	GameplayTags.Combat_Attack_Combo_Count = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.Count"),
+			FString("Every stack of this tag associated with combo attack animation index. If tag not applied, index is '0'.")
+			);
 	
-	// ===============================================================================================================
+	
 	
 	
 	//  MESSAGES

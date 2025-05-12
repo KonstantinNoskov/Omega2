@@ -79,4 +79,5 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
 	static bool IsParryEffect(const FGameplayEffectContextHandle& ContextHandle);
+	
 };

@@ -93,7 +93,7 @@ public:
 	//  ATTACK TYPES
 	// ===============================================================================================================
 
-	FGameplayTag Abilities_Attack;
+	
 
 	// ===============================================================================================================
 	
@@ -130,6 +130,7 @@ public:
 	
 	//  Character Types
 	// ===============================================================================================================
+	
 	FGameplayTag Character_Type_Undead;
 	FGameplayTag Character_AttackType_Melee;
 	FGameplayTag Character_AttackType_Range;
@@ -142,5 +143,16 @@ public:
 	FGameplayTag Colors_Damage_Blocked;
 	FGameplayTag Colors_Damage_Parry;
 	FGameplayTag Colors_Damage_Crit;
+	
+
+	// COMBAT  
+	// ===============================================================================================================
+ 
+	FGameplayTag Combat_Attack;
+	FGameplayTag Combat_Attack_Melee;
+	FGameplayTag Combat_Attack_Range;
+	FGameplayTag Combat_Attack_Combo_WindowOpened;
+	FGameplayTag Combat_Attack_Combo_Activated;
+	FGameplayTag Combat_Attack_Combo_Count;
 };
 

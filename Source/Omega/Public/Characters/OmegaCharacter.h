@@ -138,16 +138,30 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Omega|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
-	
-	//  COMBAT 
-	// -------------------------------------
 
-public:
+	// ===============================================================================================================
+	//  COMBAT
+	// ===============================================================================================================
 	
-	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override		{ return PaperAnimation->GetAnimInstance(); }
-	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override	{ return HitReactAnimation; }
-	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override			{ return DeathAnimation; }
-	FORCEINLINE virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() const override		{ return AttackAnimation; }
+public:
+
+	// Animations
+	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override
+	{
+		if (!PaperAnimation) return nullptr; 
+		return PaperAnimation->GetAnimInstance();
+	}
+	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override		{ return HitReactAnimation; }
+	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override				{ return DeathAnimation; }
+	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() const override;
+
+	// Attack
+	virtual void Attack_Implementation() override;
+	virtual void OnAttackFinished_Implementation() override;
+	
+	// Combo
+	virtual void SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag) override;
+	virtual void ResetAttack_Implementation() override;
 
 	virtual void Die_Implementation() override;
 
@@ -159,9 +173,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	TObjectPtr<UPaperZDAnimSequence> DeathAnimation;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
-	TObjectPtr<UPaperZDAnimSequence> AttackAnimation;
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Ground")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AttackAnimations;
 
-
-	
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|CombatAnimations", DisplayName = "Air")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AirAttackAnimations;
 };

@@ -6,6 +6,7 @@
 #include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
+#include "Characters/OmegaCharacter.h"
 #include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widgets/DamageTextComponent.h"
@@ -123,11 +124,16 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 {	
 	const float InputFloat = InputActionValue.Get<float>();
 
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if (AOmegaCharacter* ControlledPawn = Cast<AOmegaCharacter>(GetPawn<APawn>()))
 	{
 		bool bMoveable = GetOmegaMovementComponent()->GetOmegaCustomMovementMode() == EOmegaCustomMovementMode::NONE;
 		
 		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::NONE) return;
+		if (ControlledPawn->GetAbilitySystemComponent())
+		{
+			if (ControlledPawn->GetAbilitySystemComponent()->HasMatchingGameplayTag(FOmegaGameplayTags::Get().Combat_Attack)) return;
+		}
+		
 		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
 		

@@ -19,9 +19,6 @@ class OMEGA_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void Attack() const;
 	
 	virtual int32 GetPlayerLevel() const;
 	
@@ -35,10 +32,49 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UPaperZDAnimSequence* GetDeathAnimation() const;
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Die();
 
+
+	// ===============================================================================================================
+	//  ATTACK
+	// ===============================================================================================================
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Attack();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnAttackFinished();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetComboActivated(bool NewComboActivated);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsComboActivated() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsAttacking(bool bAttacking);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsAttackWindowOpened(const FGameplayTag& ComboWindowOpenedTag);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsAttackWindowOpened() const;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UPaperZDAnimSequence* GetAttackAnimation() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Die();
+	TArray<UPaperZDAnimSequence*> GetAttackAnimations();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	TArray<UPaperZDAnimSequence*> GetAirAttackAnimations();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ResetAttack();
+	
+	// ===============================================================================================================
+
+	
 };
