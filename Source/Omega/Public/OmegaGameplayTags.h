@@ -154,5 +154,10 @@ public:
 	FGameplayTag Combat_Attack_Combo_WindowOpened;
 	FGameplayTag Combat_Attack_Combo_Activated;
 	FGameplayTag Combat_Attack_Combo_Count;
+
+	//  MOVEMENT
+	// ===============================================================================================================
+	FGameplayTag Movement_State_InAir;
+	
 };
 

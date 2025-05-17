@@ -151,6 +151,7 @@ public:
 		if (!PaperAnimation) return nullptr; 
 		return PaperAnimation->GetAnimInstance();
 	}
+	
 	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override		{ return HitReactAnimation; }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override				{ return DeathAnimation; }
 	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() const override;
@@ -177,6 +178,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Ground")
 	TArray<TObjectPtr<UPaperZDAnimSequence>> AttackAnimations;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|CombatAnimations", DisplayName = "Air")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Air")
 	TArray<TObjectPtr<UPaperZDAnimSequence>> AirAttackAnimations;
 };

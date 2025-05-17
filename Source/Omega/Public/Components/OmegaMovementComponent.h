@@ -44,7 +44,8 @@ public:
 	void UpdateCapsulePosition(float DeltaTime) const;
 
 	UFUNCTION(BlueprintPure)
-	FORCEINLINE EOmegaCustomMovementMode GetOmegaCustomMovementMode() const { return OmegaCustomMovementMode; } 
+	FORCEINLINE EOmegaCustomMovementMode GetOmegaCustomMovementMode() const { return OmegaCustomMovementMode; }
+	
 
 private:
 
@@ -53,8 +54,6 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	EOmegaCustomMovementMode OmegaCustomMovementMode = EOmegaCustomMovementMode::NONE;
-
-protected:
 
 	
 	//  STORE INITIAL VALUES
@@ -66,7 +65,9 @@ public:
 	float InitialWalkSpeed;
 	float InitialGroundFriction;
 
-
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Omega")
+	FGameplayTagContainer MovementStateTags;
+	
 	//  COMMON FUNCTIONS
 	// =============================
 
@@ -91,7 +92,7 @@ protected:
 	 * @param OldVelocity 
 	 */
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
-
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	
 	// =============================
 	//  JUMP
@@ -100,7 +101,7 @@ protected:
 public:
 	
 	UFUNCTION()
-	void PerformJump(const FInputActionValue& InputActionValue) const;
+	void PerformJump(const FInputActionValue& InputActionValue);
 
 private:
 	
@@ -108,7 +109,7 @@ private:
 
 public:
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Jump", DisplayName = "Debug")
+	UPROPERTY(EditAnywhere, Category = "Omega|Jump", DisplayName = "Debug")
 	bool bJumpDebug = false;
 
 	
@@ -149,16 +150,16 @@ private:
 
 protected:
 
-	UFUNCTION(BlueprintCallable, Category = "Omega Movement|Dash" )
+	UFUNCTION(BlueprintCallable, Category = "Omega|Dash" )
 	void ExitDash();
 	
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
+	UPROPERTY(EditAnywhere, Category = "Omega|Dash")
 	float DashImpulse = 1000.f;
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
+	UPROPERTY(EditAnywhere, Category = "Omega|Dash")
 	float DashCooldown = 1.f;
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Dash")
+	UPROPERTY(EditAnywhere, Category = "Omega|Dash")
 	float AdjustedGroundFriction = 4.f;
 
 	
@@ -172,7 +173,7 @@ protected:
 	
 	void PerformMantle(const FVector& MantleTargetPoint);
 
-	UFUNCTION(BlueprintCallable, Category = "Omega Movement|Mantle" )
+	UFUNCTION(BlueprintCallable, Category = "Omega|Mantle" )
 	void OnMantleFinished();
 
 	UFUNCTION(Exec, DisplayName = "ShowDebug Mantle")
@@ -181,19 +182,20 @@ protected:
 	FTimerHandle MantleCheckResetTimer;
 	FTimerDelegate OnMantleResetDelegate;
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Mantle", DisplayName = "Check Interval")
+	UPROPERTY(EditAnywhere, Category = "Omega|Mantle", DisplayName = "Check Interval")
 	float MantleCheckInterval = 0.f;
 
 	FVector MantleTargetLocation;
 	
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Mantle", DisplayName = "Grab Height")
+	UPROPERTY(EditAnywhere, Category = "Omega|Mantle", DisplayName = "Grab Height")
 	float GrabHeight = 25.f;
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Mantle", DisplayName = "Animation Speed")
+	UPROPERTY(EditAnywhere, Category = "Omega|Mantle", DisplayName = "Animation Speed")
 	float MantleAnimationSpeed = 2.f;
 
-	UPROPERTY(EditAnywhere, Category = "Omega Movement|Mantle", DisplayName = "Debug")
+	UPROPERTY(EditAnywhere, Category = "Omega|Mantle", DisplayName = "Debug")
 	bool bMantleDebug = false;
 	
 	bool bValidateMantle = false;
 };
+

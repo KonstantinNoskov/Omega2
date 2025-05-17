@@ -131,20 +131,14 @@ FVector AOmegaCharacter::GetProjectileSpawnSocket(bool& bSocketExist)
 	return GetSprite()->GetSocketTransform(ProjectileSpawnSocket).GetLocation();	
 }
 
-UPaperZDAnimSequence* AOmegaCharacter::GetAttackAnimation_Implementation() const
-{
-	if (!OmegaMovementComponent) return nullptr;
-	return nullptr;
-}
 
 void AOmegaCharacter::Attack_Implementation()
 {	
-	//UPaperZDAnimInstance* AnimInstance = Execute_GetAnimationInstance(this);
-	
-
-	bool bAttackValid = PaperAnimation->GetAnimInstance() && !AttackAnimations.IsEmpty() && AbilitySystemComponent; 
-	if (!bAttackValid) return;
+	// Local Variables
 	FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
+
+	// Get Attack Animation
+	UPaperZDAnimSequence* AnimationToPlay = GetAttackAnimation_Implementation();
 
 	// Start a combo if attack ability was activated during combo window
 	if (AbilitySystemComponent->HasMatchingGameplayTag(GameplayTags.Combat_Attack_Combo_WindowOpened))
@@ -156,15 +150,33 @@ void AOmegaCharacter::Attack_Implementation()
 	if (!AbilitySystemComponent->HasMatchingGameplayTag(GameplayTags.Combat_Attack))
 	{
 		int AnimIndex = AbilitySystemComponent->GetTagCount(GameplayTags.Combat_Attack_Combo_Count);
-		PaperAnimation->GetAnimInstance()->PlayAnimationOverride(AttackAnimations[AnimIndex]);
+		PaperAnimation->GetAnimInstance()->PlayAnimationOverride(AnimationToPlay);
 	}
 	
 	// Add Attack Tag
 	AbilitySystemComponent->SetLooseGameplayTagCount(GameplayTags.Combat_Attack, 1);
 }
 
+UPaperZDAnimSequence* AOmegaCharacter::GetAttackAnimation_Implementation() const
+{
+	bool bAttackValid = PaperAnimation->GetAnimInstance() && AbilitySystemComponent && OmegaMovementComponent; 
+	if (!bAttackValid) return nullptr;
+	
+	FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
+	
+	// Defines what set of animations we choose from
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AnimationsArray = OmegaMovementComponent->MovementStateTags.HasTagExact(GameplayTags.Movement_State_InAir) ? AirAttackAnimations : AttackAnimations;
+
+	// Animation Index depends on amount of combo stacks
+	int AnimIndex = AbilitySystemComponent->GetTagCount(GameplayTags.Combat_Attack_Combo_Count);
+	
+	return AnimationsArray[AnimIndex];
+}
+
+
 void AOmegaCharacter::OnAttackFinished_Implementation()
 {
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AnimationsToPlay = OmegaMovementComponent->MovementStateTags.HasTagExact(FOmegaGameplayTags::Get().Movement_State_InAir) ? AirAttackAnimations : AttackAnimations;
 	if (!AbilitySystemComponent) return;
 	FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 	
@@ -172,17 +184,17 @@ void AOmegaCharacter::OnAttackFinished_Implementation()
 	{
 		UPaperZDAnimInstance* AnimInstance = Execute_GetAnimationInstance(this);
 		if (!AnimInstance) return;
-		if (AttackAnimations.IsEmpty()) return;
+		if (AnimationsToPlay.IsEmpty()) return;
 		
 		AbilitySystemComponent->AddLooseGameplayTag(GameplayTags.Combat_Attack_Combo_Count);
 		int AnimIndex = AbilitySystemComponent->GetTagCount(GameplayTags.Combat_Attack_Combo_Count);
-		if (AnimIndex > AttackAnimations.Num() - 1)
+		if (AnimIndex > AnimationsToPlay.Num() - 1)
 		{
 			ResetAttack_Implementation();
 			return;
 		}
 		
-		AnimInstance->PlayAnimationOverride(AttackAnimations[AnimIndex]);
+		AnimInstance->PlayAnimationOverride(AnimationsToPlay[AnimIndex]);
 		AbilitySystemComponent->SetLooseGameplayTagCount(GameplayTags.Combat_Attack_Combo_Activated, 0);
 	}
 	else

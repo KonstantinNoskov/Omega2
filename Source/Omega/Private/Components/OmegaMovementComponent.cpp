@@ -3,6 +3,7 @@
 #include "InputActionValue.h"
 #include "KismetTraceUtils.h"
 #include "OmegaCollisionChannels.h"
+#include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyEnums.h"
 #include "Characters/OmegaCharacter.h"
@@ -54,6 +55,23 @@ void UOmegaMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 //  COMMON FUNCTIONS
 // =============================
 
+void UOmegaMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
+{
+	Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
+}
+void UOmegaMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
+{
+	if (MovementMode == MOVE_Falling)
+	{
+		MovementStateTags.AddTag(FOmegaGameplayTags::Get().Movement_State_InAir);
+	}
+	if (PreviousMovementMode == MOVE_Falling)
+	{
+		MovementStateTags.RemoveTag(FOmegaGameplayTags::Get().Movement_State_InAir);
+	}
+	
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
+}
 void UOmegaMovementComponent::HandleHit()
 {
 	// Dash behavior on Capsule Hit
@@ -64,14 +82,11 @@ void UOmegaMovementComponent::HandleHit()
 }
 
 
+
 // JUMP
 // =============================
 
-void UOmegaMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
-{
-	Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
-}
-void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionValue) const
+void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionValue)
 {
 	const float InputBool = InputActionValue.Get<bool>();
 	
@@ -80,6 +95,7 @@ void UOmegaMovementComponent::PerformJump(const FInputActionValue& InputActionVa
 		if (InputBool && IsValidJump())
 		{
 			OmegaCharacterOwner->Jump();
+			MovementStateTags.AddTag(FOmegaGameplayTags::Get().Movement_State_InAir);
 		}
 	}
 }
@@ -134,7 +150,7 @@ bool UOmegaMovementComponent::IsCrouchValid(const FInputActionValue& InputAction
 		OmegaCharacterOwner &&
 		//!IsFalling() &&
 		//OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash &&
-			GetLastUpdateVelocity().Length() <= 0.f;
+		GetLastUpdateVelocity().Length() <= 0.f;
 
 	return bValidCrouch;
 }
@@ -232,8 +248,7 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 	 *	HandleMantle function is called when Character Capsule OnHit event is triggered.
 	 *	We should distinguish either we hit a floor/ceiling in which case stop function immediately or we hit a vertical wall and continue.
 	 */
-
-
+	
 	// CHECK №1
 	const bool bHorizontalHit = FVector::DotProduct(InHitResult.ImpactNormal, FVector::UpVector) == FMath::Abs(0.f) ? true : false;
 	
@@ -272,8 +287,6 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 
 		const float ObstacleHeight = (HitPoint - HitResult.ImpactPoint).Z;
 		if (ObstacleHeight > GrabHeight) return false;
-
-
 		
 		MantleTargetLocation = HitResult.ImpactPoint + FVector(0.f,0.f, OmegaCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 		UKismetSystemLibrary::CapsuleTraceSingle(

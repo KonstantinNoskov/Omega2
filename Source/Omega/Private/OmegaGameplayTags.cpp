@@ -396,4 +396,16 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Colors.Damage.Crit"),
 			FString("Defines damage widget color when the target is getting Crit damage")
 			);
+
+
+	//  MOVEMENT
+	// ===============================================================================================================
+
+	// In Air 
+	GameplayTags.Movement_State_InAir = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.InAir"),
+			FString("Assigned when character in air(jumping, falling, еtc")
+			);
+
+ 
 }
