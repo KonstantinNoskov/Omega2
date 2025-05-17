@@ -36,8 +36,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Die();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsDead() const;
 
-	// ===============================================================================================================
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* GetAvatar() const;
+
+	
 	//  ATTACK
 	// ===============================================================================================================
 
@@ -63,7 +68,7 @@ public:
 	bool IsAttackWindowOpened() const;
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	UPaperZDAnimSequence* GetAttackAnimation() const;
+	UPaperZDAnimSequence* GetAttackAnimation();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	TArray<UPaperZDAnimSequence*> GetAttackAnimations();

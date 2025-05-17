@@ -396,4 +396,37 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Colors.Damage.Crit"),
 			FString("Defines damage widget color when the target is getting Crit damage")
 			);
+
+
+	//  MOVEMENT
+	// ===============================================================================================================
+
+	// Falling
+	GameplayTags.Movement_State_Falling = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Falling"),
+			FString("Assigned when character in air(jumping, falling, еtc")
+			);
+
+	// Walking
+	GameplayTags.Movement_State_Walking = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Walking"),
+			FString("Assigned when character is moving on the ground")
+			);
+
+	// Flying
+	GameplayTags.Movement_State_Flying = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Flying"),
+			FString("Assigned when character is flying")
+			);
+
+	// Swimming
+	GameplayTags.Movement_State_Swimming = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Swimming"),
+			FString("Assigned when character is Swimming")
+			);
+
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Falling, GameplayTags.Movement_State_Falling);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Walking, GameplayTags.Movement_State_Walking);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Flying, GameplayTags.Movement_State_Flying);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Swimming, GameplayTags.Movement_State_Swimming);
 }

@@ -138,12 +138,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Omega|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
-
-	// ===============================================================================================================
-	//  COMBAT
+	
+	//  COMBAT INTERFACE
 	// ===============================================================================================================
 	
 public:
+
+	virtual AActor* GetAvatar_Implementation() const override;
 
 	// Animations
 	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override
@@ -153,7 +154,7 @@ public:
 	}
 	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override		{ return HitReactAnimation; }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override				{ return DeathAnimation; }
-	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() const override;
+	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() override;
 
 	// Attack
 	virtual void Attack_Implementation() override;
@@ -163,8 +164,10 @@ public:
 	// Combo
 	virtual void SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag) override;
 	virtual void ResetAttack_Implementation() override;
-
+	
+	// Death
 	virtual void Die_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
 
 private:
 
@@ -177,6 +180,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Ground")
 	TArray<TObjectPtr<UPaperZDAnimSequence>> AttackAnimations;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|CombatAnimations", DisplayName = "Air")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Air")
 	TArray<TObjectPtr<UPaperZDAnimSequence>> AirAttackAnimations;
 };

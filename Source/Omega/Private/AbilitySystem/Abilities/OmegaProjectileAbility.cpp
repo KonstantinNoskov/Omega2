@@ -14,7 +14,7 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 	
 	FVector ProjectileSocketLocation;
 	bool bSpawnSocketExist = false;
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()) )
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		ProjectileSocketLocation = CombatInterface->GetProjectileSpawnSocket(bSpawnSocketExist);
 	}
