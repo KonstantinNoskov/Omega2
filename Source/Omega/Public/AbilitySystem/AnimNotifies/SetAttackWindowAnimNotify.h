@@ -14,10 +14,7 @@ class OMEGA_API USetAttackWindowAnimNotify : public UPaperZDAnimNotify
 public:
 	
 	virtual void OnReceiveNotify_Implementation(UPaperZDAnimInstance* OwningInstance = nullptr) const override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bAttackWindowOpened = false;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayTag ComboWindowOpenedTag = FGameplayTag::EmptyTag;
 };

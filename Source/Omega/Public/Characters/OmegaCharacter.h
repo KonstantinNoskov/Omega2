@@ -158,7 +158,8 @@ public:
 	// Attack
 	virtual void Attack_Implementation() override;
 	virtual void OnAttackFinished_Implementation() override;
-	
+	virtual FVector GetCombatSocketLocation_Implementation() const override;
+
 	// Combo
 	virtual void SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag) override;
 	virtual void ResetAttack_Implementation() override;

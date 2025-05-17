@@ -2,6 +2,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "OmegaGameplayTags.h"
+#include "PaperFlipbook.h"
 #include "PaperZDAnimationComponent.h"
 #include "PaperZDAnimInstance.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
@@ -133,17 +134,16 @@ FVector AOmegaCharacter::GetProjectileSpawnSocket(bool& bSocketExist)
 UPaperZDAnimSequence* AOmegaCharacter::GetAttackAnimation_Implementation() const
 {
 	if (!OmegaMovementComponent) return nullptr;
-	
 	return nullptr;
 }
 
 void AOmegaCharacter::Attack_Implementation()
 {	
-	UPaperZDAnimInstance* AnimInstance = Execute_GetAnimationInstance(this);
-	if (!AnimInstance) return;
-	if (AttackAnimations.IsEmpty()) return;
-	if (!AbilitySystemComponent) return;
+	//UPaperZDAnimInstance* AnimInstance = Execute_GetAnimationInstance(this);
 	
+
+	bool bAttackValid = PaperAnimation->GetAnimInstance() && !AttackAnimations.IsEmpty() && AbilitySystemComponent; 
+	if (!bAttackValid) return;
 	FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
 
 	// Start a combo if attack ability was activated during combo window
@@ -156,7 +156,7 @@ void AOmegaCharacter::Attack_Implementation()
 	if (!AbilitySystemComponent->HasMatchingGameplayTag(GameplayTags.Combat_Attack))
 	{
 		int AnimIndex = AbilitySystemComponent->GetTagCount(GameplayTags.Combat_Attack_Combo_Count);
-		AnimInstance->PlayAnimationOverride(AttackAnimations[AnimIndex]);
+		PaperAnimation->GetAnimInstance()->PlayAnimationOverride(AttackAnimations[AnimIndex]);
 	}
 	
 	// Add Attack Tag
@@ -181,7 +181,6 @@ void AOmegaCharacter::OnAttackFinished_Implementation()
 			ResetAttack_Implementation();
 			return;
 		}
-
 		
 		AnimInstance->PlayAnimationOverride(AttackAnimations[AnimIndex]);
 		AbilitySystemComponent->SetLooseGameplayTagCount(GameplayTags.Combat_Attack_Combo_Activated, 0);
@@ -190,6 +189,12 @@ void AOmegaCharacter::OnAttackFinished_Implementation()
 	{
 		ResetAttack_Implementation();
 	}
+}
+
+FVector AOmegaCharacter::GetCombatSocketLocation_Implementation() const
+{
+	if (!GetSprite()) return FVector();
+	return  GetSprite()->GetSocketLocation("SKT_CombatSocket");
 }
 
 void AOmegaCharacter::SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag)
