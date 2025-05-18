@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimationComponent.h"
@@ -144,7 +146,7 @@ private:
 	
 public:
 
-	virtual AActor* GetAvatar_Implementation() const override;
+	FORCEINLINE virtual AActor* GetAvatar_Implementation() override { return this; }
 
 	// Animations
 	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override
@@ -160,6 +162,7 @@ public:
 	virtual void Attack_Implementation() override;
 	virtual void OnAttackFinished_Implementation() override;
 	virtual FVector GetCombatSocketLocation_Implementation() const override;
+	
 
 	// Combo
 	virtual void SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag) override;
@@ -167,7 +170,11 @@ public:
 	
 	// Death
 	virtual void Die_Implementation() override;
-	virtual bool IsDead_Implementation() const override;
+	virtual bool IsDead_Implementation() const override
+	{
+		if (!AbilitySystemComponent) return false;
+		return AbilitySystemComponent->HasMatchingGameplayTag(FOmegaGameplayTags::Get().Effects_Death);
+	};
 
 private:
 

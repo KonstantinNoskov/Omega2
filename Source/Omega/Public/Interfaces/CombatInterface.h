@@ -40,7 +40,7 @@ public:
 	bool IsDead() const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	AActor* GetAvatar() const;
+	AActor* GetAvatar();
 
 	
 	//  ATTACK

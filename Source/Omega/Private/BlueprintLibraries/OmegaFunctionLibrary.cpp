@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilityTypes.h"
+#include "Engine/OverlapResult.h"
 #include "Interfaces/CombatInterface.h"
 
 FVector2D UOmegaFunctionLibrary::GetSourceSize(UPaperSprite* Sprite)
@@ -113,4 +114,25 @@ bool UOmegaFunctionLibrary::IsParryEffect(const FGameplayEffectContextHandle& Co
 	}
 	
 	return false;
+}
+
+void UOmegaFunctionLibrary::GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent, const FVector& BoxOrigin)
+{
+	FCollisionQueryParams BoxParams;
+	BoxParams.AddIgnoredActors(IgnoredActors);
+	
+	TArray<FOverlapResult> Overlaps;
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		World->OverlapMultiByObjectType(Overlaps, BoxOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeBox(BoxExtent), BoxParams);
+		for (const FOverlapResult& OverlappedActor : Overlaps)
+		{
+			if (OverlappedActor.GetActor()->Implements<UCombatInterface>())
+			{
+				bool bDead = ICombatInterface::Execute_IsDead(OverlappedActor.GetActor());
+				if (bDead) continue;
+				OutOverlappingActors.AddUnique(OverlappedActor.GetActor());
+			}
+		}
+	}
 }

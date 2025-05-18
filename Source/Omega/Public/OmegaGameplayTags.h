@@ -121,8 +121,6 @@ public:
 	// ===============================================================================================================
 	
 	FGameplayTag Character_Type_Undead;
-	FGameplayTag Character_AttackType_Melee;
-	FGameplayTag Character_AttackType_Range;
 
 
 	//  COLORS
@@ -143,6 +141,7 @@ public:
 	FGameplayTag Combat_Attack_Combo_WindowOpened;
 	FGameplayTag Combat_Attack_Combo_Activated;
 	FGameplayTag Combat_Attack_Combo_Count;
+	
 
 	//  MOVEMENT
 	// ===============================================================================================================

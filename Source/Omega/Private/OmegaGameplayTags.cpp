@@ -355,7 +355,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	//  ATTACK TYPES
 	// ===============================================================================================================
 
-	// Melee
+	/*// Melee
 	GameplayTags.Character_AttackType_Melee = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Character.AttackType.Melee"),
 			FString("Melee Attack")
@@ -366,6 +366,7 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Character.AttackType.Range"),
 			FString("Range Attack")
 			);
+			*/
 
 	// --------------------------------------------------------------------------------------------------------------
 

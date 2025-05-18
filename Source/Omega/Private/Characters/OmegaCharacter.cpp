@@ -40,7 +40,6 @@ void AOmegaCharacter::PossessedBy(AController* NewController)
 	}
 }
 
-// -------------------------------------
 //  MOVEMENT
 // -------------------------------------
 
@@ -59,7 +58,6 @@ UOmegaMovementComponent* AOmegaCharacter::GetOmegaMovementComponent()
 }
 
 
-// -------------------------------------
 //  ABILITIES
 // -------------------------------------
 
@@ -131,7 +129,6 @@ FVector AOmegaCharacter::GetProjectileSpawnSocket(bool& bSocketExist)
 	return GetSprite()->GetSocketTransform(ProjectileSpawnSocket).GetLocation();	
 }
 
-
 void AOmegaCharacter::Attack_Implementation()
 {	
 	// Local Variables
@@ -156,7 +153,6 @@ void AOmegaCharacter::Attack_Implementation()
 	// Add Attack Tag
 	AbilitySystemComponent->SetLooseGameplayTagCount(GameplayTags.Combat_Attack, 1);
 }
-
 UPaperZDAnimSequence* AOmegaCharacter::GetAttackAnimation_Implementation()
 {
 	bool bAttackValid = PaperAnimation->GetAnimInstance() && AbilitySystemComponent && OmegaMovementComponent; 
@@ -215,6 +211,8 @@ FVector AOmegaCharacter::GetCombatSocketLocation_Implementation() const
 	if (!GetSprite()) return FVector();
 	return GetSprite()->GetSocketLocation("SKT_CombatSocket");
 }
+
+
 void AOmegaCharacter::SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag)
 {
 	if (!AbilitySystemComponent) return;
@@ -233,13 +231,9 @@ void AOmegaCharacter::Die_Implementation()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	
 	PaperAnimation->GetAnimInstance()->JumpToNode("Death");
+	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Effects_Death, 1);
 	
 	SetLifeSpan(PostDeathLifeSpan);
-}
-
-bool AOmegaCharacter::IsDead_Implementation() const
-{
-	return ICombatInterface::IsDead_Implementation();
 }
 
 bool AOmegaCharacter::ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor)
