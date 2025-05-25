@@ -108,6 +108,5 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 			const FGameplayModifierEvaluatedData EvaluatedData(UOmegaAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Override, Damage);
 			OutExecutionOutput.AddOutputModifier(EvaluatedData);	
 		}
-		
 	}
 }

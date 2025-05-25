@@ -181,6 +181,7 @@ bool UOmegaMovementComponent::IsValidDash()
 		);
 	
 	bDashValid =
+		!OmegaCharacterOwner->GetAbilitySystemComponent()->HasMatchingGameplayTag(FOmegaGameplayTags::Get().Combat_Attack) &&
 		!HitResult.bBlockingHit &&
 		CurrentTime - DashStarTime >= DashCooldown ||
 		bFirstDash;

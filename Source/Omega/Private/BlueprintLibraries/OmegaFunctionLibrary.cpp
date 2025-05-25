@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilityTypes.h"
+#include "Engine/CoreSettings.h"
 #include "Engine/OverlapResult.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -116,7 +117,8 @@ bool UOmegaFunctionLibrary::IsParryEffect(const FGameplayEffectContextHandle& Co
 	return false;
 }
 
-void UOmegaFunctionLibrary::GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent, const FVector& BoxOrigin)
+void UOmegaFunctionLibrary::GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent,
+                                                     const FVector& BoxOrigin)
 {
 	FCollisionQueryParams BoxParams;
 	BoxParams.AddIgnoredActors(IgnoredActors);

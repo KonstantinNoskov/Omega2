@@ -127,7 +127,7 @@ protected:
 public:
 	
 	
-	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist) override;
+
 	
 
 protected:
@@ -147,6 +147,8 @@ private:
 public:
 
 	FORCEINLINE virtual AActor* GetAvatar_Implementation() override { return this; }
+	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist) override;
+	virtual FVector GetCombatSocketLocation_Implementation(bool& bCombatSocketExist) const override;
 
 	// Animations
 	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override
@@ -157,11 +159,11 @@ public:
 	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override		{ return HitReactAnimation; }
 	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override				{ return DeathAnimation; }
 	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() override;
-
+	
 	// Attack
 	virtual void Attack_Implementation() override;
 	virtual void OnAttackFinished_Implementation() override;
-	virtual FVector GetCombatSocketLocation_Implementation() const override;
+	
 	
 
 	// Combo
@@ -189,4 +191,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Air")
 	TArray<TObjectPtr<UPaperZDAnimSequence>> AirAttackAnimations;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Motion")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> MotionAttackAnimations;
 };

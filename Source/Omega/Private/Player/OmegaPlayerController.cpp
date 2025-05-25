@@ -129,10 +129,10 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 		bool bMoveable = GetOmegaMovementComponent()->GetOmegaCustomMovementMode() == EOmegaCustomMovementMode::NONE;
 		
 		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::NONE) return;
-		if (ControlledPawn->GetAbilitySystemComponent())
+		/*if (ControlledPawn->GetAbilitySystemComponent())
 		{
 			if (ControlledPawn->GetAbilitySystemComponent()->HasMatchingGameplayTag(FOmegaGameplayTags::Get().Combat_Attack)) return;
-		}
+		}*/
 		
 		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));

@@ -80,7 +80,7 @@ public:
 	void ResetAttack();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FVector GetCombatSocketLocation() const;
+	FVector GetCombatSocketLocation(bool& bCombatSocketExist) const;
 	
 	
 	// ===============================================================================================================

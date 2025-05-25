@@ -86,6 +86,7 @@ public:
 	 * @return 
 	 */
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
-	static void GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent, const FVector& BoxOrigin);
+	static void GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent,
+	                                     const FVector& BoxOrigin);
 	
 };

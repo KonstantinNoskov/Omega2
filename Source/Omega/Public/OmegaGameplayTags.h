@@ -141,6 +141,8 @@ public:
 	FGameplayTag Combat_Attack_Combo_WindowOpened;
 	FGameplayTag Combat_Attack_Combo_Activated;
 	FGameplayTag Combat_Attack_Combo_Count;
+
+	FGameplayTag Combat_Animation_Damage;
 	
 
 	//  MOVEMENT
@@ -150,6 +152,7 @@ public:
 	FGameplayTag Movement_State_Walking;
 	FGameplayTag Movement_State_Flying;
 	FGameplayTag Movement_State_Swimming;
+	FGameplayTag Movement_State_Moving;
 	
 };
 

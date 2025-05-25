@@ -252,6 +252,12 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Combat.Attack.Combo.Count"),
 			FString("Every stack of this tag associated with combo attack animation index. If tag not applied, index is '0'.")
 			);
+
+	// Damage Animation Event
+	GameplayTags.Combat_Animation_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Animation.Damage"),
+			FString("Triggers applying damage in specific animation time")
+			);
 	
 	
 	
@@ -426,8 +432,15 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Assigned when character is Swimming")
 			);
 
+	// Moving
+	GameplayTags.Movement_State_Moving = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Moving"),
+			FString("Assigned when character's velocity is greater than zero")
+			);
+
 	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Falling, GameplayTags.Movement_State_Falling);
 	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Walking, GameplayTags.Movement_State_Walking);
 	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Flying, GameplayTags.Movement_State_Flying);
 	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Swimming, GameplayTags.Movement_State_Swimming);
+	
 }
