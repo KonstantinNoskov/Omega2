@@ -3,11 +3,13 @@
 #include "OmegaCollisionChannels.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/OmegaPlayerController.h"
 #include "Player/OmegaPlayerState.h"
 #include "UI/HUD/OmegaHUD.h"
@@ -78,7 +80,6 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	// GAS
 	InitAbilityActorInfo();
 	AddCharacterAbilities();
-	
 	BindDependencies(NewController);
 }
 
@@ -143,5 +144,14 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 		{
 			OmegaHUD->InitOverlay(OmegaPlayerController, OmegaPlayerState, AbilitySystemComponent, AttributeSet);
 		}
+	}
+}
+
+void APlayerBaseCharacter::Die_Implementation()
+{
+	Super::Die_Implementation();
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		PlayerController->DisableInput(PlayerController);	
 	}
 }

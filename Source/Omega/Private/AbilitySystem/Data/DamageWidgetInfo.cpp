@@ -1,6 +1,6 @@
 #include "AbilitySystem/Data/DamageWidgetInfo.h"
 
-const FDamageWidgetInfo& UDamageWidgetData::GetDamageWidgetInfoByTag(const FGameplayTag& DamageTag)
+const FColor& UDamageWidgetData::GetDamageTypeColorByTag(const FGameplayTag& GameplayTag)
 {
-	return DamageWidgetDataMap[DamageTag];
+	return DamageTypeColorsMap.Contains(GameplayTag) ? DamageTypeColorsMap[GameplayTag] : FColor::Black;
 }

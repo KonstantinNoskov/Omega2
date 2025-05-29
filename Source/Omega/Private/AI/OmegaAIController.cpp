@@ -10,9 +10,8 @@ AOmegaAIController::AOmegaAIController()
 	Blackboard = CreateDefaultSubobject<UBlackboardComponent>("Blackboard Component");
 	check(Blackboard);
 	
-	/*
 	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>("BehaviorTree Component");
-	check(BehaviorTreeComponent);*/
+	check(BehaviorTreeComponent);
 }
 
 void AOmegaAIController::BeginPlay()

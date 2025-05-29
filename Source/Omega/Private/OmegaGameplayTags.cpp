@@ -214,6 +214,54 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
 
 	
+	//  COMBAT
+	// ===============================================================================================================
+
+	// Attack
+	GameplayTags.Combat_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack"),
+			FString("Defines where character is attacking")
+			);
+
+	// Melee Attack
+	GameplayTags.Combat_Attack_Melee = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Melee"),
+			FString("Defines where character is using melee attack")
+			);
+
+	// Range Attack
+	GameplayTags.Combat_Attack_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Range"),
+			FString("Defines where character is using Range attack")
+			);
+
+	// Open Combo Window
+	GameplayTags.Combat_Attack_Combo_WindowOpened = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.WindowOpened"),
+			FString("Defines when window for activating next combo attack is opened")
+			);
+
+	// Next Combo Attack Activated
+	GameplayTags.Combat_Attack_Combo_Activated = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.Activated"),
+			FString("Defines when next combo attack is activated")
+			);
+
+	// Combo Attack Count
+	GameplayTags.Combat_Attack_Combo_Count = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Attack.Combo.Count"),
+			FString("Every stack of this tag associated with combo attack animation index. If tag not applied, index is '0'.")
+			);
+
+	// Damage Animation Event
+	GameplayTags.Combat_Animation_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Combat.Animation.Damage"),
+			FString("Triggers applying damage in specific animation time")
+			);
+	
+	
+	
+	
 	//  MESSAGES
 	// ===============================================================================================================
 	
@@ -308,7 +356,27 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Defines this character as an undead")
 			);
 
+	
+	// ===============================================================================================================
+	//  ATTACK TYPES
+	// ===============================================================================================================
 
+	/*// Melee
+	GameplayTags.Character_AttackType_Melee = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.AttackType.Melee"),
+			FString("Melee Attack")
+			);
+
+	// Range
+	GameplayTags.Character_AttackType_Range = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Character.AttackType.Range"),
+			FString("Range Attack")
+			);
+			*/
+
+	// --------------------------------------------------------------------------------------------------------------
+
+	
 	//  COLORS
 	// ===============================================================================================================
 
@@ -335,4 +403,44 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Colors.Damage.Crit"),
 			FString("Defines damage widget color when the target is getting Crit damage")
 			);
+
+
+	//  MOVEMENT
+	// ===============================================================================================================
+
+	// Falling
+	GameplayTags.Movement_State_Falling = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Falling"),
+			FString("Assigned when character in air(jumping, falling, еtc")
+			);
+
+	// Walking
+	GameplayTags.Movement_State_Walking = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Walking"),
+			FString("Assigned when character is moving on the ground")
+			);
+
+	// Flying
+	GameplayTags.Movement_State_Flying = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Flying"),
+			FString("Assigned when character is flying")
+			);
+
+	// Swimming
+	GameplayTags.Movement_State_Swimming = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Swimming"),
+			FString("Assigned when character is Swimming")
+			);
+
+	// Moving
+	GameplayTags.Movement_State_Moving = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Movement.State.Moving"),
+			FString("Assigned when character's velocity is greater than zero")
+			);
+
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Falling, GameplayTags.Movement_State_Falling);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Walking, GameplayTags.Movement_State_Walking);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Flying, GameplayTags.Movement_State_Flying);
+	GameplayTags.MovementModeToTag.Add(EMovementMode::MOVE_Swimming, GameplayTags.Movement_State_Swimming);
+	
 }

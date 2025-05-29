@@ -10,32 +10,19 @@
 
 class UWidgetAnimation;
 
-USTRUCT()
-struct FDamageWidgetInfo
-{
-	GENERATED_BODY()
-	
-	float DamageMagnitude = 0.f; 
-
-	UPROPERTY(EditDefaultsOnly)
-	FText DamageStatus = FText();
-	
-	UPROPERTY(EditDefaultsOnly)
-	FColor DamageColor = FColor::White;
-};
 
 UCLASS()
 class OMEGA_API UDamageWidgetData : public UDataAsset
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, meta=(ForceInlineRow), displayname="Damage Widget Info")
-	TMap<FGameplayTag, FDamageWidgetInfo> DamageWidgetDataMap;
-
-	UPROPERTY(EditDefaultsOnly, meta=(ForceInlineRow), displayname="Damage Widget Info")
-	TArray<FDamageWidgetInfo> DamageWidgetInfos;
+public:
 	
-	const FDamageWidgetInfo& GetDamageWidgetInfoByTag(const FGameplayTag& DamageTag);
+	const FColor& GetDamageTypeColorByTag(const FGameplayTag& GameplayTag);
+	
+	// Damage Type Color
+	UPROPERTY(EditDefaultsOnly, meta=(ForceInlineRow), displayname="Damage Type Color")
+	TMap<FGameplayTag, FColor> DamageTypeColorsMap;
 	
 };
 

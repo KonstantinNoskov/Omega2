@@ -17,11 +17,11 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|AI", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
+
 protected:
 
 	virtual void BeginPlay() override;
-	
-	/*UPROPERTY()
-	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;*/
-
 };
