@@ -1,6 +1,6 @@
 ﻿#include "AbilitySystem/Data/CharacterDefaultInfo.h"
 
-const FCharacterTypeDefaultInfo& UCharacterDefaultInfo::GetClassDefaultInfo(const FGameplayTag& CharacterClass)
+const FCharacterTypeInfo& UCharacterDefaultInfo::GetCharacterTypeInfo(const FGameplayTag& CharacterTypeClass)
 {
-	return  CharacterClassInformation.FindChecked(CharacterClass);
+	return  CharacterTypeInfo.FindChecked(CharacterTypeClass);
 }

@@ -33,7 +33,10 @@ public class Omega : ModuleRules
 			"UMG",
 			
 			// AI
-			"AIModule", "EnhancedInput",
+			"AIModule",
+			
+			// Input
+			"EnhancedInput",
 			
 			// VFX
 			"Niagara"

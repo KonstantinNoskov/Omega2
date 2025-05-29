@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimationComponent.h"
@@ -73,6 +75,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	float PostDeathLifeSpan = 5.f;
 
+	
 	//  ABILITY SYSTEM
 	// ===============================================================================================================
 
@@ -81,8 +84,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags")
-	FGameplayTagContainer CharacterTags;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags", DisplayName = "Type")
+	FGameplayTagContainer CharacterTypeTags;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Character Tags", DisplayName = "AttackType")
+	FGameplayTagContainer CharacterAttackTypeTags;
 
 public:
 	
@@ -122,7 +128,7 @@ protected:
 public:
 	
 	
-	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist) override;
+
 	
 
 protected:
@@ -136,16 +142,42 @@ private:
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 	
-	//  COMBAT 
-	// -------------------------------------
-
-public:
+	//  COMBAT INTERFACE
+	// ===============================================================================================================
 	
-	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override		{ return PaperAnimation->GetAnimInstance(); }
-	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override	{ return HitReactAnimation; }
-	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override			{ return DeathAnimation; }
+public:
 
+	FORCEINLINE virtual AActor* GetAvatar_Implementation() override { return this; }
+	virtual FVector GetProjectileSpawnSocket(bool& bSocketExist) override;
+	virtual FVector GetCombatSocketLocation_Implementation(bool& bCombatSocketExist) const override;
+
+	// Animations
+	FORCEINLINE virtual UPaperZDAnimInstance* GetAnimationInstance_Implementation() const override
+	{
+		if (!PaperAnimation) return nullptr; 
+		return PaperAnimation->GetAnimInstance();
+	}
+	FORCEINLINE virtual UPaperZDAnimSequence* GetHitReactionAnimation_Implementation() const override		{ return HitReactAnimation; }
+	FORCEINLINE virtual UPaperZDAnimSequence* GetDeathAnimation_Implementation() const override				{ return DeathAnimation; }
+	virtual UPaperZDAnimSequence* GetAttackAnimation_Implementation() override;
+	
+	// Attack
+	virtual void Attack_Implementation() override;
+	virtual void OnAttackFinished_Implementation() override;
+	
+	
+
+	// Combo
+	virtual void SetIsAttackWindowOpened_Implementation(const FGameplayTag& ComboWindowOpenedTag) override;
+	virtual void ResetAttack_Implementation() override;
+	
+	// Death
 	virtual void Die_Implementation() override;
+	virtual bool IsDead_Implementation() const override
+	{
+		if (!AbilitySystemComponent) return false;
+		return AbilitySystemComponent->HasMatchingGameplayTag(FOmegaGameplayTags::Get().Effects_Death);
+	};
 
 private:
 
@@ -154,5 +186,13 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	TObjectPtr<UPaperZDAnimSequence> DeathAnimation;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Ground")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AttackAnimations;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Air")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> AirAttackAnimations;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat|Animations", DisplayName = "Motion")
+	TArray<TObjectPtr<UPaperZDAnimSequence>> MotionAttackAnimations;
 };

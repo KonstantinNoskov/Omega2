@@ -10,6 +10,11 @@ class OMEGA_API UOmegaDamageAbility : public UOmegaGameplayAbility
 {
 	GENERATED_BODY()
 
+public:
+	
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(AActor* TargetActor);
+
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly )

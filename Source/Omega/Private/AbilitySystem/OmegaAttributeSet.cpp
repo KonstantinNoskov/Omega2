@@ -4,9 +4,10 @@
 #include "GameplayEffectExtension.h"
 #include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
-#include "BlueprintLibraries/OmegaAbilitySystemLibrary.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
+#include "Interfaces/EnemyInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/OmegaPlayerController.h"
 
@@ -100,11 +101,14 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			{
 				if (EffectProperties.TargetAvatarActor->Implements<UCombatInterface>())
 				{
-					ICombatInterface::Execute_Die(EffectProperties.TargetAvatarActor);
-
 					FGameplayTagContainer TagContainer;
 					TagContainer.AddTag(FOmegaGameplayTags::Get().Effects_Death);
 					EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+
+					if (EffectProperties.SourceAvatarActor->Implements<UEnemyInterface>())
+					{
+						IEnemyInterface::Execute_SetCombatTarget(EffectProperties.SourceAvatarActor, nullptr);
+					}
 				}
 			}
 			else
@@ -117,18 +121,33 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 			// Show Damage Widget
 			if (EffectProperties.SourceCharacter != EffectProperties.TargetCharacter)
 			{
+				FOmegaGameplayEffectContext* Context = static_cast<FOmegaGameplayEffectContext*>(Data.EffectSpec.GetContext().Get());
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
 				if(OmegaPC)
 				{
 					
 					FDamageEffectContextData DamageHandle;
 					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
-					DamageHandle.bImmune = UOmegaAbilitySystemLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
-					DamageHandle.bBlocked = UOmegaAbilitySystemLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
-					DamageHandle.bParried = UOmegaAbilitySystemLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bImmune = UOmegaFunctionLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bBlocked = UOmegaFunctionLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bParried = UOmegaFunctionLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.DamageType = Context->GetDamageTypes().GetByIndex(0);
 					
 					OmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
-				}				
+				}
+
+				AOmegaPlayerController* NewOmegaPC = Cast<AOmegaPlayerController>(EffectProperties.TargetCharacter->Controller);
+				if(NewOmegaPC)
+				{
+					FDamageEffectContextData DamageHandle;
+					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
+					DamageHandle.bImmune = UOmegaFunctionLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bBlocked = UOmegaFunctionLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.bParried = UOmegaFunctionLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+					DamageHandle.DamageType = Context->GetDamageTypes().GetByIndex(0);
+					
+					NewOmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
+				}
 			}
 		}
 	}
@@ -169,7 +188,7 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
 	{
 		OutEffectProperties.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
-		OutEffectProperties.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		OutEffectProperties.TargetController = Data.Target.AbilityActorInfo->AvatarActor->GetInstigatorController()/* PlayerController.Get()*/;
 		OutEffectProperties.TargetCharacter = Cast<ACharacter>(OutEffectProperties.TargetAvatarActor);
 		OutEffectProperties.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutEffectProperties.TargetAvatarActor);
 	}

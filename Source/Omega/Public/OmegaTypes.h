@@ -101,6 +101,9 @@ struct FDamageEffectContextData
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bParried = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayTag DamageType = FGameplayTag::EmptyTag;
 	
 };
 

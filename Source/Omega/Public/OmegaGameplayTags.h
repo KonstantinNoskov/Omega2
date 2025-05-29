@@ -29,20 +29,19 @@ public:
 	 * @value		Damage Resistance tag 
 	 */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	TMap<EMovementMode, FGameplayTag> MovementModeToTag;
 	
 	
-	// -------------------------------------
 	//  PRIMARY ATTRIBUTE
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
 	FGameplayTag Attributes_Primary_Dexterity;
 
-
-	// -------------------------------------
+	
 	//  SECONDARY ATTRIBUTE
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
@@ -51,12 +50,12 @@ public:
 	FGameplayTag Attributes_Secondary_CritChance;
 
 	
-	// -------------------------------------
 	//  TERTIARY ATTRIBUTE
-	// -------------------------------------
+	// ===============================================================================================================
 
 	FGameplayTag Attributes_Tertiary_Health;
 	FGameplayTag Attributes_Tertiary_Mana;
+	
 
 	//  DAMAGE TYPES
 	// ===============================================================================================================
@@ -78,20 +77,19 @@ public:
 	FGameplayTag Attributes_Secondary_Resistance_Lightning;
 
 	
-	// -------------------------------------
+	
 	//  DEBUFF STATUSES 
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	FGameplayTag Elemental_Fire_OnFire;
 	FGameplayTag Elemental_Fire_Burn;
 
 	FGameplayTag Elemental_Water_InWater;
 	FGameplayTag Elemental_Water_Wet;
-
 	
-	// -------------------------------------
+	
 	//  MESSAGES
-	// -------------------------------------
+	// ===============================================================================================================
 	
 	FGameplayTag Message_HealthPotion_Small;
 	FGameplayTag Message_HealthPotion_Mid;
@@ -105,14 +103,14 @@ public:
 
 	
 	//  INPUT
-	// -------------------------------------
+	// ===============================================================================================================
 
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 
 
 	//  META
-	// -------------------------------------
+	// ===============================================================================================================
 
 	FGameplayTag Damage;
 	FGameplayTag Effects_HitReact;
@@ -121,6 +119,7 @@ public:
 	
 	//  Character Types
 	// ===============================================================================================================
+	
 	FGameplayTag Character_Type_Undead;
 
 
@@ -131,5 +130,29 @@ public:
 	FGameplayTag Colors_Damage_Blocked;
 	FGameplayTag Colors_Damage_Parry;
 	FGameplayTag Colors_Damage_Crit;
+	
+
+	// COMBAT  
+	// ===============================================================================================================
+ 
+	FGameplayTag Combat_Attack;
+	FGameplayTag Combat_Attack_Melee;
+	FGameplayTag Combat_Attack_Range;
+	FGameplayTag Combat_Attack_Combo_WindowOpened;
+	FGameplayTag Combat_Attack_Combo_Activated;
+	FGameplayTag Combat_Attack_Combo_Count;
+
+	FGameplayTag Combat_Animation_Damage;
+	
+
+	//  MOVEMENT
+	// ===============================================================================================================
+	
+	FGameplayTag Movement_State_Falling;
+	FGameplayTag Movement_State_Walking;
+	FGameplayTag Movement_State_Flying;
+	FGameplayTag Movement_State_Swimming;
+	FGameplayTag Movement_State_Moving;
+	
 };
 

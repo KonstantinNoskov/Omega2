@@ -42,7 +42,7 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	OmegaAIController = Cast<AOmegaAIController>(NewController);
-	if (OmegaAIController)
+	if (OmegaAIController && BehaviorTree)
 	{
 		OmegaAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 		OmegaAIController->RunBehaviorTree(BehaviorTree);	
@@ -60,10 +60,10 @@ void AEnemyCharacter::BeginPlay()
 		OmegaUserWidget->SetWidgetController(this);
 	}
 
-	UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+	//UOmegaFunctionLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 	
 	BindCallbacks();
-}
+}		
 
 // -------------------------------------
 //  SETUP
@@ -94,12 +94,11 @@ void AEnemyCharacter::BindCallbacks()
 		// Broadcast initial attribute values
 		OnHealthChanged.Broadcast(OmegaAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(OmegaAS->GetMaxHealth());
-		
 	}
 }
 
 // -------------------------------------
-//  ENEMY INTERFACE
+//  COMBAT INTERFACE
 // -------------------------------------
 
 void AEnemyCharacter::Die_Implementation()
@@ -107,6 +106,10 @@ void AEnemyCharacter::Die_Implementation()
 	Super::Die_Implementation();
 
 	HealthBar->GetUserWidgetObject()->SetVisibility(ESlateVisibility::Hidden);
+
+	if (!OmegaAIController) return;
+	OmegaAIController->GetBlackboardComponent()->SetValueAsBool("bDead", true);
+	
 }
 
 void AEnemyCharacter::SetCombatTarget_Implementation(AActor* TargetActor)
@@ -150,10 +153,6 @@ void AEnemyCharacter::DeathTagChanged(const FGameplayTag CallbackTag, int32 NewT
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetOmegaMovementComponent()->GetBaseWalkSpeed();
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-
-	/*PaperAnimation->GetAnimInstance()->JumpToNode("Death");
-	SetLifeSpan(PostDeathLifeSpan);
-	CombatTargetName = "";*/
 }
 
 
