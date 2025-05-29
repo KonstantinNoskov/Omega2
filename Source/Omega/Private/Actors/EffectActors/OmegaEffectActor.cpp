@@ -1,6 +1,7 @@
 ﻿#include "Actors/EffectActors/OmegaEffectActor.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "OmegaAbilityTypes.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -29,10 +30,19 @@ void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclass
 	
 	// Creating EffectContextHandle 
 	FGameplayEffectContextHandle EffectContextHandle = OmegaASC->MakeEffectContext();
-	EffectContextHandle.AddSourceObject(this);
+	FOmegaGameplayEffectContext* OmegaEffectContext = static_cast<FOmegaGameplayEffectContext*>(EffectContextHandle.Get());
+	OmegaEffectContext->AddSourceObject(this);
 	
 	// Creating EffectSpecHandle based on EffectContextHandle
 	const FGameplayEffectSpecHandle EffectSpecHandle = OmegaASC->MakeOutgoingSpec(InGameplayEffectClass, ActorLevel, EffectContextHandle);
+	for (TTuple<FGameplayTag, FScalableFloat> Pair : DamageTypes)
+	{
+		OmegaEffectContext->AddDamageType(Pair.Key);
+		const FGameplayTag DamageTypeTag = Pair.Key;
+		const float ScaledDamage = Pair.Value.GetValueAtLevel(AbilityLevel);
+		
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, DamageTypeTag, ScaledDamage);
+	}
 	
 	// Making Target ability system apply effect to itself and store it.
 	const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = OmegaASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
@@ -44,7 +54,7 @@ void AOmegaEffectActor::OnOverlap(AActor* TargetActor)
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)		{	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);	}
 	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);	}
 	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);	}
-	
+
 	// Handle Effect Removal 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (!TargetASC) return; 
