@@ -67,5 +67,12 @@ protected:
 #pragma endregion
 
 	virtual void InitAbilityActorInfo() override;
+
+
+	//  COMBAT INTERFACE
+	// ===============================================================================================================
+
+public:
 	
+	virtual void Die_Implementation() override;
 };

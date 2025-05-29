@@ -75,6 +75,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Combat")
 	float PostDeathLifeSpan = 5.f;
 
+	
 	//  ABILITY SYSTEM
 	// ===============================================================================================================
 

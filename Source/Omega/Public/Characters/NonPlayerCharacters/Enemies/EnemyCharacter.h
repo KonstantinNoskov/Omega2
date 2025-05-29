@@ -27,7 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	
-	// -------------------------------------
+	
 	//  COMBAT INTERFACE
 	// -------------------------------------
 
@@ -36,14 +36,14 @@ public:
 	FORCEINLINE virtual int32 GetPlayerLevel() const override { return Level; }
 	virtual void Die_Implementation() override;
 
-	// -------------------------------------
-	//  ENEMY INTERFACE
-	// -------------------------------------
 
+	//  ENEMY INTERFACE
+	// ===============================================================================================================
+	
 	virtual void SetCombatTarget_Implementation(AActor* TargetActor) override;
 
 
-	// -------------------------------------
+	
 	//  DELEGATES
 	// -------------------------------------
 	
@@ -54,17 +54,17 @@ public:
 	FOnAttributeValueChangedSignature OnMaxHealthChanged;
 
 	
-	// -------------------------------------
+	
 	//  AI
 	// -------------------------------------
 	
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY(EditAnywhere, Category = "Omega|AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = "Omega|AI");
 	TObjectPtr<AOmegaAIController> OmegaAIController;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|AI")
 	FName CombatTargetName = "CombatTarget";
 
 

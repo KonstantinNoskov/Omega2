@@ -88,5 +88,14 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library")
 	static void GetAlivePlayersWithinBox(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& IgnoredActors, const FVector& BoxExtent,
 	                                     const FVector& BoxOrigin);
+
+	/**
+	 * @param ContextHandle
+	 * @param GameplayTag
+	 *
+	 * @return true if 
+	 */
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static const FColor& GetDamageTypeColorByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag);
 	
 };

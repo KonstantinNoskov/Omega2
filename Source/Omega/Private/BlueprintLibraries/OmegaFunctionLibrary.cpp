@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilityTypes.h"
+#include "AbilitySystem/Data/DamageWidgetInfo.h"
 #include "Engine/CoreSettings.h"
 #include "Engine/OverlapResult.h"
 #include "Interfaces/CombatInterface.h"
@@ -126,7 +127,9 @@ void UOmegaFunctionLibrary::GetAlivePlayersWithinBox(const UObject* WorldContext
 	TArray<FOverlapResult> Overlaps;
 	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{
-		World->OverlapMultiByObjectType(Overlaps, BoxOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeBox(BoxExtent), BoxParams);
+		bool bHit = World->OverlapMultiByObjectType(Overlaps, BoxOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeBox(BoxExtent), BoxParams);
+		//if (!bHit) return;
+		
 		for (const FOverlapResult& OverlappedActor : Overlaps)
 		{
 			if (OverlappedActor.GetActor()->Implements<UCombatInterface>())
@@ -137,4 +140,22 @@ void UOmegaFunctionLibrary::GetAlivePlayersWithinBox(const UObject* WorldContext
 			}
 		}
 	}
+}
+
+const FColor& UOmegaFunctionLibrary::GetDamageTypeColorByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag)
+{
+	// Check for GameMode
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!OmegaGameMode) return FColor::Black; 
+
+	// Check for Character Class Info 
+	if (!OmegaGameMode->DamageWidgetData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[%hs] Damage Widget Data is null. Check for game mode defaults."), __FUNCTION__);
+		return FColor::Black;
+	}
+	
+	UDamageWidgetData* DamageWidgetData = OmegaGameMode->DamageWidgetData;
+	
+	return DamageWidgetData ? DamageWidgetData->GetDamageTypeColorByTag(GameplayTag) : FColor::Black;
 }

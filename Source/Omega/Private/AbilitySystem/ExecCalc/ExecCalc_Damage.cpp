@@ -92,9 +92,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		
 		checkf(OmegaDamageStatics().TagsToCaptureDefs.Contains(DamageResistanceTag), TEXT("%hs: TagsToCaptureDefs doesn't contain Tag: [%s] in ExecCalc_Damage"), __FUNCTION__, *DamageResistanceTag.ToString())
 		const FGameplayEffectAttributeCaptureDefinition CaptureDef = OmegaDamageStatics().TagsToCaptureDefs[DamageResistanceTag];
-
+		
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag, false, 0.f);
-
+		
 		if (DamageTypeValue > 0)
 		{
 			// Evaluate Damage Resistance Magnitude

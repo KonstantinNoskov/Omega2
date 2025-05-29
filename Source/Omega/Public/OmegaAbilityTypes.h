@@ -16,14 +16,19 @@ struct FOmegaGameplayEffectContext : public FGameplayEffectContext
 
 
 	// Getters
-	FORCEINLINE bool IsImmune() const		{ return bImmune; }
-	FORCEINLINE bool IsParried() const		{ return bParried; }
-	FORCEINLINE bool IsBlocked() const		{ return bBlocked; }
+	FORCEINLINE bool IsImmune() const									{ return bImmune; }
+	FORCEINLINE bool IsParried() const									{ return bParried; }
+	FORCEINLINE bool IsBlocked() const									{ return bBlocked; }
+	FORCEINLINE const FGameplayTagContainer& GetDamageTypes() const		{ return DamageTypes; }
 	
 	// Setters
-	void SetIsImmune(bool InbImmune)		{ bImmune = InbImmune; }
-	void SetIsParried(bool InbParried)		{ bImmune = InbParried; }
-	void SetIsBlocked(bool InbBlocked)		{ bBlocked = InbBlocked; }
+	FORCEINLINE void SetIsImmune(bool InbImmune)										{ bImmune = InbImmune; }
+	FORCEINLINE void SetIsParried(bool InbParried)										{ bImmune = InbParried; }
+	FORCEINLINE void SetIsBlocked(bool InbBlocked)										{ bBlocked = InbBlocked; }
+	FORCEINLINE void SetDamageType(const FGameplayTagContainer& NewDamageTypes) 		{ DamageTypes = NewDamageTypes; }
+
+	FORCEINLINE void AddDamageType(const FGameplayTag& NewDamageType) 					{ DamageTypes.AddTag(NewDamageType); }
+	
 
 protected:
 
@@ -35,6 +40,9 @@ protected:
 
 	UPROPERTY()
 	bool bBlocked = false;
+
+	UPROPERTY()
+	FGameplayTagContainer DamageTypes = FGameplayTagContainer::EmptyContainer; 
 };
 
 template<>

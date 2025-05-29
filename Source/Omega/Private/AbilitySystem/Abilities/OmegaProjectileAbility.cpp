@@ -2,6 +2,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "OmegaAbilityTypes.h"
 #include "OmegaGameplayTags.h"
 #include "Actors/OmegaProjectile.h"
 #include "Interfaces/CombatInterface.h"
@@ -46,8 +47,15 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 
 	// Set Effect Context
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
-	EffectContextHandle.SetAbility(this);
-	EffectContextHandle.AddSourceObject(Projectile);
+	FOmegaGameplayEffectContext* OmegaEffectContext = static_cast<FOmegaGameplayEffectContext*>(EffectContextHandle.Get());
+	
+	OmegaEffectContext->SetAbility(this);
+	OmegaEffectContext->AddSourceObject(Projectile);
+
+	for (auto DamageType : DamageTypes)
+	{
+		OmegaEffectContext->AddDamageType(DamageType.Key);
+	}
 	
 	// Set Projectile Effect spec 
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);

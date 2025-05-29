@@ -215,6 +215,7 @@ void AOmegaCharacter::ResetAttack_Implementation()
 	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Combat_Attack_Combo_Activated, 0);
 	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Combat_Attack, 0);
 	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Combat_Attack_Combo_Count, 0);
+	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Combat_Attack_Combo_WindowOpened, 0);
 }
 
 FVector AOmegaCharacter::GetCombatSocketLocation_Implementation(bool& bCombatSocketExist) const
@@ -238,10 +239,14 @@ void AOmegaCharacter::SetIsAttackWindowOpened_Implementation(const FGameplayTag&
 }
 void AOmegaCharacter::Die_Implementation()
 {
-	
+	// Disable collision
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+
+	UPaperZDAnimInstance* AnimInstance = PaperAnimation->GetAnimInstance();
 	
+	AnimInstance->PlayAnimationOverride(DeathAnimation);
 	PaperAnimation->GetAnimInstance()->JumpToNode("Death");
 	AbilitySystemComponent->SetLooseGameplayTagCount(FOmegaGameplayTags::Get().Effects_Death, 1);
 	

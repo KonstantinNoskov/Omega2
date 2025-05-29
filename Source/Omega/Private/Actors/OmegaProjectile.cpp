@@ -3,6 +3,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "OmegaAbilityTypes.h"
 #include "OmegaCollisionChannels.h"
 #include "PaperFlipbookComponent.h"
 #include "Actors/PaperEffectActor.h"
@@ -70,10 +71,8 @@ void AOmegaProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 		else
 		{
 			UE_LOG(LogTemp, Error, TEXT("[%hs] Projectile ability doesn't have a damage effect. Check for omega projectile ability damage effect class. "), __FUNCTION__);
-			
 		}
 	}
-	
 	Destroy();
 }
 
