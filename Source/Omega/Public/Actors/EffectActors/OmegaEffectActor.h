@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "OmegaTypes.h"
+#include "ScalableFloat.h"
 #include "GameFramework/Actor.h"
 #include "OmegaEffectActor.generated.h"
 
@@ -46,7 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass);
+	void ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, const EEffectApplicationPolicy& ApplyPolicy);
 
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(AActor* TargetActor);
@@ -57,30 +58,44 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	float ActorLevel = 1.f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Instant Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Instant Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect")
 	EEffectApplicationPolicy InstantEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply; 
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Duration Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Duration Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect")
 	EEffectApplicationPolicy DurationEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Duration Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect")
 	EEffectRemovalPolicy DurationEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnOverlap;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Infinite Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Infinite Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect")
 	EEffectApplicationPolicy InfiniteEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects|Applied/Removal Policies|Infinite Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects")
 	bool bDestroyOnEffectRemoval = false;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> InstantDamage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> DurationDamage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> InfiniteDamage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega", meta=(ForceInlineRow))
+	int32 EffectLevel = 1;
+
+	TMap<EEffectApplicationPolicy, TMap<FGameplayTag, FScalableFloat>> DurationPolicyToDamage;
 };
