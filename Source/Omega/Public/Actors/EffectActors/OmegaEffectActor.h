@@ -47,7 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass);
+	void ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, const EEffectApplicationPolicy& ApplyPolicy);
 
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(AActor* TargetActor);
@@ -84,13 +84,18 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects")
 	bool bDestroyOnEffectRemoval = false;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> InstantDamage;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Omega|Damage" )
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> DurationDamage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Damage", meta=(ForceInlineRow))
-	TMap<FGameplayTag, FScalableFloat> DamageTypes;
+	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect", meta=(ForceInlineRow))
+	TMap<FGameplayTag, FScalableFloat> InfiniteDamage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Damage", meta=(ForceInlineRow))
-	int32 AbilityLevel = 1;
+	UPROPERTY(EditDefaultsOnly, Category = "Omega", meta=(ForceInlineRow))
+	int32 EffectLevel = 1;
+
+	TMap<EEffectApplicationPolicy, TMap<FGameplayTag, FScalableFloat>> DurationPolicyToDamage;
 };

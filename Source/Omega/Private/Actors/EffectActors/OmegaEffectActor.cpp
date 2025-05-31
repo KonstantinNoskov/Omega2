@@ -16,11 +16,14 @@ AOmegaEffectActor::AOmegaEffectActor()
 void AOmegaEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	DurationPolicyToDamage.Add(InstantEffectApplicationPolicy, InstantDamage);
+	DurationPolicyToDamage.Add(DurationEffectApplicationPolicy, DurationDamage);
+	DurationPolicyToDamage.Add(InfiniteEffectApplicationPolicy, InfiniteDamage);
 	
 }
 
-void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass)
+void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, const EEffectApplicationPolicy& ApplyPolicy)
 {
 	// Gameplay effect valid check
 	checkf(InGameplayEffectClass, TEXT("[%hs]: GameplayEffect is null! Set GameplayEffect in Effect Actor's defaults."), __FUNCTION__)
@@ -32,14 +35,21 @@ void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclass
 	FGameplayEffectContextHandle EffectContextHandle = OmegaASC->MakeEffectContext();
 	FOmegaGameplayEffectContext* OmegaEffectContext = static_cast<FOmegaGameplayEffectContext*>(EffectContextHandle.Get());
 	OmegaEffectContext->AddSourceObject(this);
+
+	TMap<FGameplayTag, FScalableFloat> DamageTypeMapToChooseFrom = DurationPolicyToDamage[ApplyPolicy];
 	
 	// Creating EffectSpecHandle based on EffectContextHandle
 	const FGameplayEffectSpecHandle EffectSpecHandle = OmegaASC->MakeOutgoingSpec(InGameplayEffectClass, ActorLevel, EffectContextHandle);
-	for (TTuple<FGameplayTag, FScalableFloat> Pair : DamageTypes)
+	for (TTuple<FGameplayTag, FScalableFloat> Pair : DamageTypeMapToChooseFrom)
 	{
+		if (!Pair.Value.IsValid()) return;
+	
 		OmegaEffectContext->AddDamageType(Pair.Key);
+
+		const FRealCurve* DamageCurve = Pair.Value.Curve.CurveTable->FindCurve("Fire_OnFire", "");
+		
 		const FGameplayTag DamageTypeTag = Pair.Key;
-		const float ScaledDamage = Pair.Value.GetValueAtLevel(AbilityLevel);
+		float ScaledDamage = Pair.Value.GetValueAtLevel(EffectLevel);
 		
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHandle, DamageTypeTag, ScaledDamage);
 	}
@@ -51,9 +61,9 @@ void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclass
 void AOmegaEffectActor::OnOverlap(AActor* TargetActor)
 {
 	// Apply logic on overlap
-	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)		{	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);	}
-	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);	}
-	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);	}
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)		{	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass, InstantEffectApplicationPolicy);	}
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass, DurationEffectApplicationPolicy);	}
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)	{	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass, InfiniteEffectApplicationPolicy);	}
 
 	// Handle Effect Removal 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
@@ -65,9 +75,9 @@ void AOmegaEffectActor::OnOverlap(AActor* TargetActor)
 
 void AOmegaEffectActor::OnEndOverlap(AActor* TargetActor)
 {
-	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);	}
-	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);	}
-	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);	}
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass, InstantEffectApplicationPolicy);	}
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass, DurationEffectApplicationPolicy);	}
+	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)	{	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass, InfiniteEffectApplicationPolicy);	}
 	
 	// Removal logic
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
