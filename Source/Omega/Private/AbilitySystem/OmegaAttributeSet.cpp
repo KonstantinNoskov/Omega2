@@ -104,7 +104,7 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 					FGameplayTagContainer TagContainer;
 					TagContainer.AddTag(FOmegaGameplayTags::Get().Effects_Death);
 					EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-
+					
 					if (EffectProperties.SourceAvatarActor->Implements<UEnemyInterface>())
 					{
 						IEnemyInterface::Execute_SetCombatTarget(EffectProperties.SourceAvatarActor, nullptr);
@@ -117,15 +117,14 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 				TagContainer.AddTag(FOmegaGameplayTags::Get().Effects_HitReact);
 				EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
-
+			
 			// Show Damage Widget
 			if (EffectProperties.SourceCharacter != EffectProperties.TargetCharacter)
 			{
-				FOmegaGameplayEffectContext* Context = static_cast<FOmegaGameplayEffectContext*>(Data.EffectSpec.GetContext().Get());
+				FOmegaGameplayEffectContext*Context = static_cast<FOmegaGameplayEffectContext*>(Data.EffectSpec.GetContext().Get());
 				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
 				if(OmegaPC)
 				{
-					
 					FDamageEffectContextData DamageHandle;
 					DamageHandle.Damage = Data.EvaluatedData.Magnitude;
 					DamageHandle.bImmune = UOmegaFunctionLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
@@ -148,6 +147,22 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 					
 					NewOmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
 				}
+
+				return;
+			}
+
+			FOmegaGameplayEffectContext*Context = static_cast<FOmegaGameplayEffectContext*>(Data.EffectSpec.GetContext().Get());
+			AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
+			if(OmegaPC)
+			{
+				FDamageEffectContextData DamageHandle;
+				DamageHandle.Damage = Data.EvaluatedData.Magnitude;
+				DamageHandle.bImmune = UOmegaFunctionLibrary::IsImmuneToEffect(EffectProperties.EffectContextHandle);
+				DamageHandle.bBlocked = UOmegaFunctionLibrary::IsBlockedEffect(EffectProperties.EffectContextHandle);
+				DamageHandle.bParried = UOmegaFunctionLibrary::IsParryEffect(EffectProperties.EffectContextHandle);
+				DamageHandle.DamageType = Context->GetDamageTypes().GetByIndex(0);
+					
+				OmegaPC->ShowFloatingText(DamageHandle, EffectProperties.TargetCharacter);
 			}
 		}
 	}
