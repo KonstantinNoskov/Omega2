@@ -45,8 +45,6 @@ void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclass
 		if (!Pair.Value.IsValid()) return;
 	
 		OmegaEffectContext->AddDamageType(Pair.Key);
-
-		const FRealCurve* DamageCurve = Pair.Value.Curve.CurveTable->FindCurve("Fire_OnFire", "");
 		
 		const FGameplayTag DamageTypeTag = Pair.Key;
 		float ScaledDamage = Pair.Value.GetValueAtLevel(EffectLevel);
